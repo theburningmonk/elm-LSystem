@@ -3034,117 +3034,237 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var cantorDust = {_: {}
-                    ,axiom: _L.fromArray([_U.chr("A")])
-                    ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                         ,_0: _U.chr("A")
-                                                         ,_1: _L.fromArray([_U.chr("A")
-                                                                           ,_U.chr("B")
-                                                                           ,_U.chr("A")])}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: _U.chr("B")
-                                                         ,_1: _L.fromArray([_U.chr("B")
-                                                                           ,_U.chr("B")
-                                                                           ,_U.chr("B")])}]))};
-   var allStates = function () {
-      var $ = cantorDust,
-      axiom = $.axiom,
-      rules = $.rules;
-      var states = A3($Signal.foldp,
-      F2(function (_v0,_v1) {
-         return function () {
-            switch (_v1.ctor)
-            {case "::": return function () {
-                    return A2($List._op["::"],
-                    A2($Core.evolve,rules,_v1._0),
-                    A2($List._op["::"],
-                    _v1._0,
-                    _v1._1));
-                 }();}
-            _U.badCase($moduleName,
-            "on line 58, column 39 to 63");
-         }();
-      }),
-      _L.fromArray([axiom]),
-      $Core.generations);
-      return A2($Signal._op["<~"],
-      $List.reverse,
-      states);
-   }();
-   var rectHeight = 25.0;
-   var drawState = F3(function (winWidth,
-   y,
-   state) {
+   var draw = F2(function (pos,
+   endPos) {
+      return $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
+      pos,
+      endPos));
+   });
+   var updateCanvasArea = F2(function (area,
+   pos) {
       return function () {
-         var len = $Debug.watch("count")($Basics.toFloat($List.length(state)));
-         var rectWidth = winWidth / len;
-         var startX = (0 - winWidth) / 2 + rectWidth / 2;
-         var xs = $List.map(function (n) {
-            return startX + n * rectWidth;
-         })($List.map($Basics.toFloat)(_L.range(0,
-         $List.length(state) - 1)));
-         var rects = A3($List.map2,
-         F2(function (sym,x) {
+         var f = F4(function (compareX,
+         compareY,
+         _v0,
+         _v1) {
             return function () {
-               var colour = function () {
-                  switch (sym + "")
-                  {case "A": return $Color.black;
-                     case "B": return $Color.white;}
-                  _U.badCase($moduleName,
-                  "between lines 33 and 36");
-               }();
-               return $Graphics$Collage.move({ctor: "_Tuple2"
-                                             ,_0: x
-                                             ,_1: y})($Graphics$Collage.filled(colour)(A2($Graphics$Collage.rect,
-               rectWidth,
-               rectHeight)));
+               switch (_v1.ctor)
+               {case "_Tuple2":
+                  return function () {
+                       switch (_v0.ctor)
+                       {case "_Tuple2":
+                          return {ctor: "_Tuple2"
+                                 ,_0: A2(compareX,_v0._0,_v1._0)
+                                 ,_1: A2(compareY,
+                                 _v0._1,
+                                 _v1._1)};}
+                       _U.badCase($moduleName,
+                       "on line 42, column 6 to 36");
+                    }();}
+               _U.badCase($moduleName,
+               "on line 42, column 6 to 36");
             }();
-         }),
-         state,
-         xs);
-         return rects;
+         });
+         return {_: {}
+                ,bottomL: A4(f,
+                $Basics.min,
+                $Basics.min,
+                area.bottomL,
+                pos)
+                ,bottomR: A4(f,
+                $Basics.max,
+                $Basics.min,
+                area.bottomR,
+                pos)
+                ,topL: A4(f,
+                $Basics.min,
+                $Basics.max,
+                area.topL,
+                pos)
+                ,topR: A4(f,
+                $Basics.max,
+                $Basics.max,
+                area.topR,
+                pos)};
       }();
    });
-   var display = F2(function (_v7,
-   states) {
+   var calcEndPos = F3(function (_v8,
+   rotation,
+   length) {
       return function () {
-         switch (_v7.ctor)
+         switch (_v8.ctor)
          {case "_Tuple2":
             return function () {
-                 var content = $List.concat(A2($List.map2,
-                 F2(function (state,y) {
-                    return A3(drawState,
-                    $Basics.toFloat(_v7._0),
-                    y,
-                    state);
-                 }),
-                 states)($List.map(function (n) {
-                    return (0 - rectHeight) * n * 2 + $Basics.toFloat(_v7._1) / 3;
-                 })($List.map($Basics.toFloat)(_L.range(1,
-                 $List.length(states))))));
-                 var bg = $Graphics$Collage.filled($Color.white)(A2($Graphics$Collage.rect,
-                 $Basics.toFloat(_v7._0),
-                 $Basics.toFloat(_v7._1)));
-                 return A3($Graphics$Collage.collage,
-                 _v7._0,
-                 _v7._1,
-                 A2($List._op["::"],bg,content));
+                 var endY = _v8._1 + length * $Basics.sin(rotation);
+                 var endX = _v8._0 + length * $Basics.cos(rotation);
+                 return {ctor: "_Tuple2"
+                        ,_0: endX
+                        ,_1: endY};
               }();}
          _U.badCase($moduleName,
-         "between lines 44 and 53");
+         "between lines 35 and 37");
       }();
    });
+   var canvasDimension = function (area) {
+      return function () {
+         var height = $Basics.snd(area.topL) - $Basics.snd(area.bottomL);
+         var width = $Basics.fst(area.topR) - $Basics.fst(area.topL);
+         return {ctor: "_Tuple2"
+                ,_0: width
+                ,_1: height};
+      }();
+   };
+   var defaultCanvasArea = {_: {}
+                           ,bottomL: {ctor: "_Tuple2"
+                                     ,_0: 0
+                                     ,_1: 0}
+                           ,bottomR: {ctor: "_Tuple2"
+                                     ,_0: 0
+                                     ,_1: 0}
+                           ,topL: {ctor: "_Tuple2"
+                                  ,_0: 0
+                                  ,_1: 0}
+                           ,topR: {ctor: "_Tuple2"
+                                  ,_0: 0
+                                  ,_1: 0}};
+   var display = F2(function (_v12,
+   state) {
+      return function () {
+         switch (_v12.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var _ = $Debug.watch("windowDimension")({ctor: "_Tuple2"
+                                                         ,_0: _v12._0
+                                                         ,_1: _v12._1});
+                 var startRot = 0;
+                 var startPos = {ctor: "_Tuple2"
+                                ,_0: 0
+                                ,_1: 0};
+                 var _ = A2($List.foldl,
+                 F2(function (sym,_v16) {
+                    return function () {
+                       switch (_v16.ctor)
+                       {case "_Tuple4":
+                          return function () {
+                               switch (sym + "")
+                               {case "+":
+                                  return {ctor: "_Tuple4"
+                                         ,_0: _v16._0
+                                         ,_1: _v16._1 + $Basics.pi / 2
+                                         ,_2: _v16._2
+                                         ,_3: _v16._3};
+                                  case "-":
+                                  return {ctor: "_Tuple4"
+                                         ,_0: _v16._0
+                                         ,_1: _v16._1 - $Basics.pi / 2
+                                         ,_2: _v16._2
+                                         ,_3: _v16._3};
+                                  case "F": return function () {
+                                       var endPos = A3(calcEndPos,
+                                       _v16._0,
+                                       _v16._1,
+                                       10);
+                                       var newSeg = A2(draw,
+                                       _v16._0,
+                                       endPos);
+                                       var newAcc = A2($List._op["::"],
+                                       newSeg,
+                                       _v16._2);
+                                       var newCanvasArea = A2(updateCanvasArea,
+                                       _v16._3,
+                                       endPos);
+                                       return {ctor: "_Tuple4"
+                                              ,_0: endPos
+                                              ,_1: _v16._1
+                                              ,_2: newAcc
+                                              ,_3: newCanvasArea};
+                                    }();}
+                               _U.badCase($moduleName,
+                               "between lines 59 and 68");
+                            }();}
+                       _U.badCase($moduleName,
+                       "between lines 59 and 68");
+                    }();
+                 }),
+                 {ctor: "_Tuple4"
+                 ,_0: startPos
+                 ,_1: startRot
+                 ,_2: _L.fromArray([])
+                 ,_3: defaultCanvasArea})(state);
+                 var canvasArea = function () {
+                    switch (_.ctor)
+                    {case "_Tuple4": return _._3;}
+                    _U.badCase($moduleName,
+                    "between lines 58 and 68");
+                 }();
+                 var segs = function () {
+                    switch (_.ctor)
+                    {case "_Tuple4": return _._2;}
+                    _U.badCase($moduleName,
+                    "between lines 58 and 68");
+                 }();
+                 var $ = canvasDimension(canvasArea),
+                 canvasWidth = $._0,
+                 canvasHeight = $._1;
+                 var _ = $Debug.watch("canvasDimension")({ctor: "_Tuple2"
+                                                         ,_0: canvasWidth
+                                                         ,_1: canvasHeight});
+                 var scaleFactor = _U.cmp(canvasWidth,
+                 $Basics.toFloat(_v12._0)) > 0 || _U.cmp(canvasHeight,
+                 $Basics.toFloat(_v12._1)) > 0 ? A2($Basics.min,
+                 $Basics.toFloat(_v12._0) / canvasWidth,
+                 $Basics.toFloat(_v12._1) / canvasHeight) : 1.0;
+                 var _ = $Debug.watch("scaleFactor")(scaleFactor);
+                 var _ = $Debug.watch("canvas_area")(canvasArea);
+                 var content = $Graphics$Collage.move({ctor: "_Tuple2"
+                                                      ,_0: (0 - canvasWidth) * scaleFactor / 2
+                                                      ,_1: (0 - canvasHeight) * scaleFactor / 2})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segs)));
+                 return A3($Graphics$Collage.collage,
+                 _v12._0,
+                 _v12._1,
+                 _L.fromArray([content]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 55 and 82");
+      }();
+   });
+   var CanvasArea = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,bottomL: c
+             ,bottomR: d
+             ,topL: a
+             ,topR: b};
+   });
+   var kochCurve = {_: {}
+                   ,axiom: _L.fromArray([_U.chr("F")])
+                   ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                        ,_0: _U.chr("F")
+                                                        ,_1: _L.fromArray([_U.chr("F")
+                                                                          ,_U.chr("+")
+                                                                          ,_U.chr("F")
+                                                                          ,_U.chr("-")
+                                                                          ,_U.chr("F")
+                                                                          ,_U.chr("-")
+                                                                          ,_U.chr("F")
+                                                                          ,_U.chr("+")
+                                                                          ,_U.chr("F")])}]))};
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    display,
    $Window.dimensions),
-   allStates);
+   $Core.states(kochCurve));
    _elm.Main.values = {_op: _op
-                      ,rectHeight: rectHeight
-                      ,cantorDust: cantorDust
-                      ,drawState: drawState
+                      ,kochCurve: kochCurve
+                      ,CanvasArea: CanvasArea
+                      ,defaultCanvasArea: defaultCanvasArea
+                      ,canvasDimension: canvasDimension
+                      ,calcEndPos: calcEndPos
+                      ,updateCanvasArea: updateCanvasArea
+                      ,draw: draw
                       ,display: display
-                      ,allStates: allStates
                       ,main: main};
    return _elm.Main.values;
 };
