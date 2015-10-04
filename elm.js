@@ -3025,6 +3025,7 @@ Elm.Main.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
    $Core = Elm.Core.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
    $Dict = Elm.Dict.make(_elm),
    $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
@@ -3033,204 +3034,117 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var pop = function (_v0) {
-      return function () {
-         switch (_v0.ctor)
-         {case "::":
-            return {ctor: "_Tuple2"
-                   ,_0: _v0._0
-                   ,_1: _v0._1};}
-         _U.badCase($moduleName,
-         "on line 35, column 17 to 23");
-      }();
-   };
-   var push = F2(function (x,
-   stack) {
-      return A2($List._op["::"],
-      x,
-      stack);
-   });
-   var calcEndPos = F3(function (_v4,
-   rotation,
-   length) {
-      return function () {
-         switch (_v4.ctor)
-         {case "_Tuple2":
-            return function () {
-                 var endY = _v4._1 + length * $Basics.sin(rotation);
-                 var endX = _v4._0 + length * $Basics.cos(rotation);
-                 return {ctor: "_Tuple2"
-                        ,_0: endX
-                        ,_1: endY};
-              }();}
-         _U.badCase($moduleName,
-         "between lines 27 and 29");
-      }();
-   });
-   var createSegments = F2(function (pos,
+   var cantorDust = {_: {}
+                    ,axiom: _L.fromArray([_U.chr("A")])
+                    ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                         ,_0: _U.chr("A")
+                                                         ,_1: _L.fromArray([_U.chr("A")
+                                                                           ,_U.chr("B")
+                                                                           ,_U.chr("A")])}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: _U.chr("B")
+                                                         ,_1: _L.fromArray([_U.chr("B")
+                                                                           ,_U.chr("B")
+                                                                           ,_U.chr("B")])}]))};
+   var allStates = function () {
+      var $ = cantorDust,
+      axiom = $.axiom,
+      rules = $.rules;
+      var states = A3($Signal.foldp,
+      F2(function (_v0,_v1) {
+         return function () {
+            switch (_v1.ctor)
+            {case "::": return function () {
+                    return A2($List._op["::"],
+                    A2($Core.evolve,rules,_v1._0),
+                    A2($List._op["::"],
+                    _v1._0,
+                    _v1._1));
+                 }();}
+            _U.badCase($moduleName,
+            "on line 58, column 39 to 63");
+         }();
+      }),
+      _L.fromArray([axiom]),
+      $Core.generations);
+      return A2($Signal._op["<~"],
+      $List.reverse,
+      states);
+   }();
+   var rectHeight = 25.0;
+   var drawState = F3(function (winWidth,
+   y,
    state) {
       return function () {
-         var stack = _L.fromArray([]);
-         var length = 10;
-         var rotation = $Basics.pi / 2;
-         var loop = F6(function (pos,
-         rotation,
-         length,
-         stack,
-         state,
-         acc) {
+         var len = $Debug.watch("count")($Basics.toFloat($List.length(state)));
+         var rectWidth = winWidth / len;
+         var startX = (0 - winWidth) / 2 + rectWidth / 2;
+         var xs = $List.map(function (n) {
+            return startX + n * rectWidth;
+         })($List.map($Basics.toFloat)(_L.range(0,
+         $List.length(state) - 1)));
+         var rects = A3($List.map2,
+         F2(function (sym,x) {
             return function () {
-               switch (state.ctor)
-               {case "::":
-                  switch (state._0 + "")
-                    {case "0": return function () {
-                            var endPos = A3(calcEndPos,
-                            pos,
-                            rotation,
-                            length / 2);
-                            var newSeg = $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
-                            pos,
-                            endPos));
-                            return A6(loop,
-                            pos,
-                            rotation,
-                            length,
-                            stack,
-                            state._1,
-                            A2($List._op["::"],newSeg,acc));
-                         }();
-                       case "1": return function () {
-                            var endPos = A3(calcEndPos,
-                            pos,
-                            rotation,
-                            length);
-                            var newSeg = $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
-                            pos,
-                            endPos));
-                            return A6(loop,
-                            endPos,
-                            rotation,
-                            length,
-                            stack,
-                            state._1,
-                            A2($List._op["::"],newSeg,acc));
-                         }();
-                       case "[": return function () {
-                            var newRotation = rotation + $Basics.pi / 4;
-                            var newStack = A2(push,
-                            {ctor: "_Tuple2"
-                            ,_0: pos
-                            ,_1: rotation},
-                            stack);
-                            return A6(loop,
-                            pos,
-                            newRotation,
-                            length,
-                            newStack,
-                            state._1,
-                            acc);
-                         }();
-                       case "]": return function () {
-                            var _ = pop(stack);
-                            var newPos = function () {
-                               switch (_.ctor)
-                               {case "_Tuple2":
-                                  switch (_._0.ctor)
-                                    {case "_Tuple2":
-                                       return _._0._0;}
-                                    break;}
-                               _U.badCase($moduleName,
-                               "on line 47, column 58 to 67");
-                            }();
-                            var newRotation$ = function () {
-                               switch (_.ctor)
-                               {case "_Tuple2":
-                                  switch (_._0.ctor)
-                                    {case "_Tuple2":
-                                       return _._0._1;}
-                                    break;}
-                               _U.badCase($moduleName,
-                               "on line 47, column 58 to 67");
-                            }();
-                            var newStack = function () {
-                               switch (_.ctor)
-                               {case "_Tuple2":
-                                  switch (_._0.ctor)
-                                    {case "_Tuple2": return _._1;}
-                                    break;}
-                               _U.badCase($moduleName,
-                               "on line 47, column 58 to 67");
-                            }();
-                            var newRotation = newRotation$ - $Basics.pi / 4;
-                            return A6(loop,
-                            newPos,
-                            newRotation,
-                            length,
-                            newStack,
-                            state._1,
-                            acc);
-                         }();}
-                    break;
-                  case "[]": return acc;}
-               _U.badCase($moduleName,
-               "between lines 40 and 59");
+               var colour = function () {
+                  switch (sym + "")
+                  {case "A": return $Color.black;
+                     case "B": return $Color.white;}
+                  _U.badCase($moduleName,
+                  "between lines 33 and 36");
+               }();
+               return $Graphics$Collage.move({ctor: "_Tuple2"
+                                             ,_0: x
+                                             ,_1: y})($Graphics$Collage.filled(colour)(A2($Graphics$Collage.rect,
+               rectWidth,
+               rectHeight)));
             }();
-         });
-         return A6(loop,
-         pos,
-         rotation,
-         length,
-         stack,
+         }),
          state,
-         _L.fromArray([]));
+         xs);
+         return rects;
       }();
    });
-   var display = F2(function (_v26,
-   state) {
+   var display = F2(function (_v7,
+   states) {
       return function () {
-         switch (_v26.ctor)
+         switch (_v7.ctor)
          {case "_Tuple2":
             return function () {
-                 var startPos = {ctor: "_Tuple2"
-                                ,_0: 0.0
-                                ,_1: (0 - $Basics.toFloat(_v26._1)) / 2};
-                 var paths = A2(createSegments,
-                 startPos,
-                 state);
+                 var content = $List.concat(A2($List.map2,
+                 F2(function (state,y) {
+                    return A3(drawState,
+                    $Basics.toFloat(_v7._0),
+                    y,
+                    state);
+                 }),
+                 states)($List.map(function (n) {
+                    return (0 - rectHeight) * n * 2 + $Basics.toFloat(_v7._1) / 3;
+                 })($List.map($Basics.toFloat)(_L.range(1,
+                 $List.length(states))))));
+                 var bg = $Graphics$Collage.filled($Color.white)(A2($Graphics$Collage.rect,
+                 $Basics.toFloat(_v7._0),
+                 $Basics.toFloat(_v7._1)));
                  return A3($Graphics$Collage.collage,
-                 _v26._0,
-                 _v26._1,
-                 paths);
+                 _v7._0,
+                 _v7._1,
+                 A2($List._op["::"],bg,content));
               }();}
          _U.badCase($moduleName,
-         "between lines 66 and 68");
+         "between lines 44 and 53");
       }();
    });
-   var pTree = {_: {}
-               ,axiom: _L.fromArray([_U.chr("0")])
-               ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                    ,_0: _U.chr("1")
-                                                    ,_1: _L.fromArray([_U.chr("1")
-                                                                      ,_U.chr("1")])}
-                                                   ,{ctor: "_Tuple2"
-                                                    ,_0: _U.chr("0")
-                                                    ,_1: _L.fromArray([_U.chr("1")
-                                                                      ,_U.chr("[")
-                                                                      ,_U.chr("0")
-                                                                      ,_U.chr("]")
-                                                                      ,_U.chr("0")])}]))};
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    display,
    $Window.dimensions),
-   $Core.states(pTree));
+   allStates);
    _elm.Main.values = {_op: _op
-                      ,pTree: pTree
-                      ,calcEndPos: calcEndPos
-                      ,push: push
-                      ,pop: pop
-                      ,createSegments: createSegments
+                      ,rectHeight: rectHeight
+                      ,cantorDust: cantorDust
+                      ,drawState: drawState
                       ,display: display
+                      ,allStates: allStates
                       ,main: main};
    return _elm.Main.values;
 };

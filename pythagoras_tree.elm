@@ -34,37 +34,37 @@ push x stack = x::stack
 pop : Stack -> ((Position, Rotation), Stack)
 pop (hd::tl) = (hd, tl)
 
-createSegments : Position -> State -> List(Form)
-createSegments pos state =
-    let loop pos rotation length stack state acc =
+createSegments : Position -> Length -> State -> List(Form)
+createSegments pos length state =
+    let loop pos rotation stack state acc =
         case state of
             [] -> acc
             '['::tl ->
                 let newStack    = push (pos, rotation) stack
                     newRotation = rotation + pi/4
-                in loop pos newRotation length newStack tl acc
+                in loop pos newRotation newStack tl acc
             ']'::tl ->
                 let ((newPos, newRotation'), newStack) = pop stack
                     newRotation = newRotation' - pi/4
-                in loop newPos newRotation length newStack tl acc
+                in loop newPos newRotation newStack tl acc
             '0'::tl ->
                 let endPos = calcEndPos pos rotation (length/2)
                     newSeg = segment pos endPos |> traced (solid black)
-                in loop pos rotation length stack tl (newSeg::acc)
+                in loop pos rotation stack tl (newSeg::acc)
             '1'::tl ->
                 let endPos = calcEndPos pos rotation length
                     newSeg = segment pos endPos |> traced (solid black)
-                in loop endPos rotation length stack tl (newSeg::acc)
+                in loop endPos rotation stack tl (newSeg::acc)
 
         rotation = pi/2 -- start with 90% (i.e. vertical)
-        length   = 10   -- starting length
-        stack    = []   -- start with empty stack (pos, rotation, length)
-    in loop pos rotation length stack state []
+        stack    = []   -- start with empty stack (pos, rotation)
+    in loop pos rotation stack state []
 
-display : (Int,Int) -> State -> Element
-display (w,h) state = 
+display : (Int,Int) -> Int -> State -> Element
+display (w,h) gen state = 
   let startPos = (0.0, -(toFloat h)/2) 
-      paths    = createSegments startPos state
+      length   = 15 / (max (toFloat gen) 1) |> max 1 |> Debug.watch "length"
+      paths    = createSegments startPos length state
   in collage w h paths
 
-main = display <~ Window.dimensions ~ (states pTree)
+main = display <~ Window.dimensions ~ (Debug.watch "gen" <~ generations) ~ (states pTree)
