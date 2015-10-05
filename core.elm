@@ -4,6 +4,8 @@ import Dict exposing (..)
 import Signal exposing (..)
 import String
 import Time
+import Keyboard
+import Debug
 
 type alias Symbol  = Char
 type alias State   = List(Symbol)
@@ -15,10 +17,21 @@ evolve rules state =
   state 
   |> List.map (\s -> get s rules |> Maybe.withDefault [s])
   |> List.concat
-  
+
+evolveTo : LSystem -> Int -> State
+evolveTo {axiom, rules} gen =
+  let loop n state =
+        if n >= gen then state
+        else evolve rules state |> loop (n+1)
+  in loop 0 axiom
+
+genChanges : Signal Int
+genChanges = .x <~ Keyboard.arrows
+
 generations : Signal Int
-generations = foldp (\_ n -> n + 1) 0 (Time.fps 1)
+generations = 
+  foldp (\x n -> n + x |> max 0) 0 genChanges
 
 states : LSystem -> Signal State
-states {axiom, rules} = 
-  foldp (\_ state -> evolve rules state) axiom generations
+states lSys = 
+  (evolveTo lSys) <~ (Debug.watch "gen" <~ generations)
