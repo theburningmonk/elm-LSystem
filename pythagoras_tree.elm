@@ -63,8 +63,12 @@ createSegments pos length state =
 display : (Int,Int) -> Int -> State -> Element
 display (w,h) gen state = 
   let startPos = (0.0, -(toFloat h)/2) 
-      length   = 15 / (max (toFloat gen) 1) |> max 1 |> Debug.watch "length"
+      length   = 15 / (max (toFloat gen) 1) 
+                 |> max 1
+                 |> Debug.watch "length"
       paths    = createSegments startPos length state
   in collage w h paths
 
-main = display <~ Window.dimensions ~ (Debug.watch "gen" <~ generations) ~ (states pTree)
+main = display <~ Window.dimensions 
+                ~ generations
+                ~ (states pTree)

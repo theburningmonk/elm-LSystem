@@ -12,7 +12,6 @@ algae =
               ('A', [ 'A', 'B' ]),
               ('B', [ 'A' ])
             ] }        
-            
-output = String.fromList <~ (states algae)
 
+output = String.fromList <~ (states algae)
 main = show <~ output
