@@ -55,9 +55,11 @@ display (w,h) states =
 allStates : Signal (List(State))
 allStates = 
   let {axiom, rules} = cantorDust
-      states = foldp (\_ (hd::tl) -> (evolve rules hd)::hd::tl) 
-                     [axiom] 
-                     generations
+      folder = (\gen -> 
+        [1..gen] 
+        |> List.foldl (\_ (hd::tl) -> 
+            evolve rules hd::hd::tl) [axiom])
+      states = folder <~ (Debug.watch "gen" <~ generations)
   in List.reverse <~ states
 
 main = display <~ Window.dimensions ~ allStates

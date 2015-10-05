@@ -1,5 +1,6 @@
-var Elm = Elm || { Native: {} };
-Elm.Basics = Elm.Basics || {};
+<!DOCTYPE HTML>
+<html><head><meta charset="UTF-8"><title>Main</title><style>html,head,body { padding:0; margin:0; }
+body { font-family: calibri, helvetica, arial, sans-serif; }</style><script type="text/javascript">var Elm = Elm || { Native: {} };Elm.Basics = Elm.Basics || {};
 Elm.Basics.make = function (_elm) {
    "use strict";
    _elm.Basics = _elm.Basics || {};
@@ -176,8 +177,7 @@ Elm.Basics.make = function (_elm) {
                         ,EQ: EQ
                         ,GT: GT};
    return _elm.Basics.values;
-};
-Elm.Char = Elm.Char || {};
+};Elm.Char = Elm.Char || {};
 Elm.Char.make = function (_elm) {
    "use strict";
    _elm.Char = _elm.Char || {};
@@ -240,8 +240,7 @@ Elm.Char.make = function (_elm) {
                       ,toCode: toCode
                       ,fromCode: fromCode};
    return _elm.Char.values;
-};
-Elm.Color = Elm.Color || {};
+};Elm.Color = Elm.Color || {};
 Elm.Color.make = function (_elm) {
    "use strict";
    _elm.Color = _elm.Color || {};
@@ -691,8 +690,7 @@ Elm.Color.make = function (_elm) {
                        ,gray: gray
                        ,darkGray: darkGray};
    return _elm.Color.values;
-};
-Elm.Core = Elm.Core || {};
+};Elm.Core = Elm.Core || {};
 Elm.Core.make = function (_elm) {
    "use strict";
    _elm.Core = _elm.Core || {};
@@ -766,8 +764,7 @@ Elm.Core.make = function (_elm) {
                       ,generations: generations
                       ,states: states};
    return _elm.Core.values;
-};
-Elm.Debug = Elm.Debug || {};
+};Elm.Debug = Elm.Debug || {};
 Elm.Debug.make = function (_elm) {
    "use strict";
    _elm.Debug = _elm.Debug || {};
@@ -792,8 +789,7 @@ Elm.Debug.make = function (_elm) {
                        ,watchSummary: watchSummary
                        ,trace: trace};
    return _elm.Debug.values;
-};
-Elm.Dict = Elm.Dict || {};
+};Elm.Dict = Elm.Dict || {};
 Elm.Dict.make = function (_elm) {
    "use strict";
    _elm.Dict = _elm.Dict || {};
@@ -1781,8 +1777,7 @@ Elm.Dict.make = function (_elm) {
                       ,toList: toList
                       ,fromList: fromList};
    return _elm.Dict.values;
-};
-Elm.Graphics = Elm.Graphics || {};
+};Elm.Graphics = Elm.Graphics || {};
 Elm.Graphics.Collage = Elm.Graphics.Collage || {};
 Elm.Graphics.Collage.make = function (_elm) {
    "use strict";
@@ -2135,8 +2130,7 @@ Elm.Graphics.Collage.make = function (_elm) {
                                   ,Sharp: Sharp
                                   ,Clipped: Clipped};
    return _elm.Graphics.Collage.values;
-};
-Elm.Graphics = Elm.Graphics || {};
+};Elm.Graphics = Elm.Graphics || {};
 Elm.Graphics.Element = Elm.Graphics.Element || {};
 Elm.Graphics.Element.make = function (_elm) {
    "use strict";
@@ -2669,8 +2663,7 @@ Elm.Graphics.Element.make = function (_elm) {
                                   ,Element: Element
                                   ,Position: Position};
    return _elm.Graphics.Element.values;
-};
-Elm.Keyboard = Elm.Keyboard || {};
+};Elm.Keyboard = Elm.Keyboard || {};
 Elm.Keyboard.make = function (_elm) {
    "use strict";
    _elm.Keyboard = _elm.Keyboard || {};
@@ -2833,8 +2826,7 @@ Elm.Keyboard.make = function (_elm) {
                           ,keysDown: keysDown
                           ,presses: presses};
    return _elm.Keyboard.values;
-};
-Elm.List = Elm.List || {};
+};Elm.List = Elm.List || {};
 Elm.List.make = function (_elm) {
    "use strict";
    _elm.List = _elm.List || {};
@@ -3188,8 +3180,7 @@ Elm.List.make = function (_elm) {
                       ,sortBy: sortBy
                       ,sortWith: sortWith};
    return _elm.List.values;
-};
-Elm.Main = Elm.Main || {};
+};Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
    "use strict";
    _elm.Main = _elm.Main || {};
@@ -3212,128 +3203,240 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var cantorDust = {_: {}
-                    ,axiom: _L.fromArray([_U.chr("A")])
-                    ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                         ,_0: _U.chr("A")
-                                                         ,_1: _L.fromArray([_U.chr("A")
-                                                                           ,_U.chr("B")
-                                                                           ,_U.chr("A")])}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: _U.chr("B")
-                                                         ,_1: _L.fromArray([_U.chr("B")
-                                                                           ,_U.chr("B")
-                                                                           ,_U.chr("B")])}]))};
-   var allStates = function () {
-      var $ = cantorDust,
-      axiom = $.axiom,
-      rules = $.rules;
-      var folder = function (gen) {
-         return A2($List.foldl,
-         F2(function (_v0,_v1) {
+   var draw = F2(function (pos,
+   endPos) {
+      return $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
+      pos,
+      endPos));
+   });
+   var updateCanvasArea = F2(function (area,
+   pos) {
+      return function () {
+         var f = F4(function (compareX,
+         compareY,
+         _v0,
+         _v1) {
             return function () {
                switch (_v1.ctor)
-               {case "::": return function () {
-                       return A2($List._op["::"],
-                       A2($Core.evolve,rules,_v1._0),
-                       A2($List._op["::"],
-                       _v1._0,
-                       _v1._1));
+               {case "_Tuple2":
+                  return function () {
+                       switch (_v0.ctor)
+                       {case "_Tuple2":
+                          return {ctor: "_Tuple2"
+                                 ,_0: A2(compareX,_v0._0,_v1._0)
+                                 ,_1: A2(compareY,
+                                 _v0._1,
+                                 _v1._1)};}
+                       _U.badCase($moduleName,
+                       "on line 42, column 6 to 36");
                     }();}
                _U.badCase($moduleName,
-               "on line 61, column 13 to 36");
+               "on line 42, column 6 to 36");
             }();
-         }),
-         _L.fromArray([axiom]))(_L.range(1,
-         gen));
-      };
-      var states = A2($Signal._op["<~"],
-      folder,
-      A2($Signal._op["<~"],
-      $Debug.watch("gen"),
-      $Core.generations));
-      return A2($Signal._op["<~"],
-      $List.reverse,
-      states);
-   }();
-   var rectHeight = 25.0;
-   var drawState = F3(function (winWidth,
-   y,
-   state) {
-      return function () {
-         var len = $Debug.watch("count")($Basics.toFloat($List.length(state)));
-         var rectWidth = winWidth / len;
-         var startX = (0 - winWidth) / 2 + rectWidth / 2;
-         var xs = $List.map(function (n) {
-            return startX + n * rectWidth;
-         })($List.map($Basics.toFloat)(_L.range(0,
-         $List.length(state) - 1)));
-         var rects = A3($List.map2,
-         F2(function (sym,x) {
-            return function () {
-               var colour = function () {
-                  switch (sym + "")
-                  {case "A": return $Color.black;
-                     case "B": return $Color.white;}
-                  _U.badCase($moduleName,
-                  "between lines 33 and 36");
-               }();
-               return $Graphics$Collage.move({ctor: "_Tuple2"
-                                             ,_0: x
-                                             ,_1: y})($Graphics$Collage.filled(colour)(A2($Graphics$Collage.rect,
-               rectWidth,
-               rectHeight)));
-            }();
-         }),
-         state,
-         xs);
-         return rects;
+         });
+         return {_: {}
+                ,bottomL: A4(f,
+                $Basics.min,
+                $Basics.min,
+                area.bottomL,
+                pos)
+                ,bottomR: A4(f,
+                $Basics.max,
+                $Basics.min,
+                area.bottomR,
+                pos)
+                ,topL: A4(f,
+                $Basics.min,
+                $Basics.max,
+                area.topL,
+                pos)
+                ,topR: A4(f,
+                $Basics.max,
+                $Basics.max,
+                area.topR,
+                pos)};
       }();
    });
-   var display = F2(function (_v7,
-   states) {
+   var calcEndPos = F3(function (_v8,
+   rotation,
+   length) {
       return function () {
-         switch (_v7.ctor)
+         switch (_v8.ctor)
          {case "_Tuple2":
             return function () {
-                 var content = $List.concat(A2($List.map2,
-                 F2(function (state,y) {
-                    return A3(drawState,
-                    $Basics.toFloat(_v7._0),
-                    y,
-                    state);
-                 }),
-                 states)($List.map(function (n) {
-                    return (0 - rectHeight) * n * 2 + $Basics.toFloat(_v7._1) / 3;
-                 })($List.map($Basics.toFloat)(_L.range(1,
-                 $List.length(states))))));
-                 var bg = $Graphics$Collage.filled($Color.white)(A2($Graphics$Collage.rect,
-                 $Basics.toFloat(_v7._0),
-                 $Basics.toFloat(_v7._1)));
-                 return A3($Graphics$Collage.collage,
-                 _v7._0,
-                 _v7._1,
-                 A2($List._op["::"],bg,content));
+                 var endY = _v8._1 + length * $Basics.sin(rotation);
+                 var endX = _v8._0 + length * $Basics.cos(rotation);
+                 return {ctor: "_Tuple2"
+                        ,_0: endX
+                        ,_1: endY};
               }();}
          _U.badCase($moduleName,
-         "between lines 44 and 53");
+         "between lines 35 and 37");
       }();
    });
+   var canvasDimension = function (area) {
+      return function () {
+         var height = $Basics.snd(area.topL) - $Basics.snd(area.bottomL);
+         var width = $Basics.fst(area.topR) - $Basics.fst(area.topL);
+         return {ctor: "_Tuple2"
+                ,_0: width
+                ,_1: height};
+      }();
+   };
+   var defaultCanvasArea = {_: {}
+                           ,bottomL: {ctor: "_Tuple2"
+                                     ,_0: 0
+                                     ,_1: 0}
+                           ,bottomR: {ctor: "_Tuple2"
+                                     ,_0: 0
+                                     ,_1: 0}
+                           ,topL: {ctor: "_Tuple2"
+                                  ,_0: 0
+                                  ,_1: 0}
+                           ,topR: {ctor: "_Tuple2"
+                                  ,_0: 0
+                                  ,_1: 0}};
+   var display = F2(function (_v12,
+   state) {
+      return function () {
+         switch (_v12.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var _ = $Debug.watch("windowDimension")({ctor: "_Tuple2"
+                                                         ,_0: _v12._0
+                                                         ,_1: _v12._1});
+                 var startRot = 0;
+                 var startPos = {ctor: "_Tuple2"
+                                ,_0: 0
+                                ,_1: 0};
+                 var _ = A2($List.foldl,
+                 F2(function (sym,_v16) {
+                    return function () {
+                       switch (_v16.ctor)
+                       {case "_Tuple4":
+                          return function () {
+                               switch (sym + "")
+                               {case "+":
+                                  return {ctor: "_Tuple4"
+                                         ,_0: _v16._0
+                                         ,_1: _v16._1 + $Basics.pi / 2
+                                         ,_2: _v16._2
+                                         ,_3: _v16._3};
+                                  case "-":
+                                  return {ctor: "_Tuple4"
+                                         ,_0: _v16._0
+                                         ,_1: _v16._1 - $Basics.pi / 2
+                                         ,_2: _v16._2
+                                         ,_3: _v16._3};
+                                  case "F": return function () {
+                                       var endPos = A3(calcEndPos,
+                                       _v16._0,
+                                       _v16._1,
+                                       10);
+                                       var newSeg = A2(draw,
+                                       _v16._0,
+                                       endPos);
+                                       var newAcc = A2($List._op["::"],
+                                       newSeg,
+                                       _v16._2);
+                                       var newCanvasArea = A2(updateCanvasArea,
+                                       _v16._3,
+                                       endPos);
+                                       return {ctor: "_Tuple4"
+                                              ,_0: endPos
+                                              ,_1: _v16._1
+                                              ,_2: newAcc
+                                              ,_3: newCanvasArea};
+                                    }();}
+                               _U.badCase($moduleName,
+                               "between lines 59 and 68");
+                            }();}
+                       _U.badCase($moduleName,
+                       "between lines 59 and 68");
+                    }();
+                 }),
+                 {ctor: "_Tuple4"
+                 ,_0: startPos
+                 ,_1: startRot
+                 ,_2: _L.fromArray([])
+                 ,_3: defaultCanvasArea})(state);
+                 var canvasArea = function () {
+                    switch (_.ctor)
+                    {case "_Tuple4": return _._3;}
+                    _U.badCase($moduleName,
+                    "between lines 58 and 68");
+                 }();
+                 var segs = function () {
+                    switch (_.ctor)
+                    {case "_Tuple4": return _._2;}
+                    _U.badCase($moduleName,
+                    "between lines 58 and 68");
+                 }();
+                 var $ = canvasDimension(canvasArea),
+                 canvasWidth = $._0,
+                 canvasHeight = $._1;
+                 var _ = $Debug.watch("canvasDimension")({ctor: "_Tuple2"
+                                                         ,_0: canvasWidth
+                                                         ,_1: canvasHeight});
+                 var scaleFactor = _U.cmp(canvasWidth,
+                 $Basics.toFloat(_v12._0)) > 0 || _U.cmp(canvasHeight,
+                 $Basics.toFloat(_v12._1)) > 0 ? A2($Basics.min,
+                 $Basics.toFloat(_v12._0) / canvasWidth,
+                 $Basics.toFloat(_v12._1) / canvasHeight) : 1.0;
+                 var _ = $Debug.watch("scaleFactor")(scaleFactor);
+                 var _ = $Debug.watch("canvas_area")(canvasArea);
+                 var content = $Graphics$Collage.move({ctor: "_Tuple2"
+                                                      ,_0: (0 - canvasWidth) * scaleFactor / 2
+                                                      ,_1: (0 - canvasHeight) * scaleFactor / 2})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segs)));
+                 return A3($Graphics$Collage.collage,
+                 _v12._0,
+                 _v12._1,
+                 _L.fromArray([content]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 55 and 82");
+      }();
+   });
+   var CanvasArea = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,bottomL: c
+             ,bottomR: d
+             ,topL: a
+             ,topR: b};
+   });
+   var kochCurve = {_: {}
+                   ,axiom: _L.fromArray([_U.chr("F")])
+                   ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                        ,_0: _U.chr("F")
+                                                        ,_1: _L.fromArray([_U.chr("F")
+                                                                          ,_U.chr("+")
+                                                                          ,_U.chr("F")
+                                                                          ,_U.chr("-")
+                                                                          ,_U.chr("F")
+                                                                          ,_U.chr("-")
+                                                                          ,_U.chr("F")
+                                                                          ,_U.chr("+")
+                                                                          ,_U.chr("F")])}]))};
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    display,
    $Window.dimensions),
-   allStates);
+   $Core.states(kochCurve));
    _elm.Main.values = {_op: _op
-                      ,rectHeight: rectHeight
-                      ,cantorDust: cantorDust
-                      ,drawState: drawState
+                      ,kochCurve: kochCurve
+                      ,CanvasArea: CanvasArea
+                      ,defaultCanvasArea: defaultCanvasArea
+                      ,canvasDimension: canvasDimension
+                      ,calcEndPos: calcEndPos
+                      ,updateCanvasArea: updateCanvasArea
+                      ,draw: draw
                       ,display: display
-                      ,allStates: allStates
                       ,main: main};
    return _elm.Main.values;
-};
-Elm.Maybe = Elm.Maybe || {};
+};Elm.Maybe = Elm.Maybe || {};
 Elm.Maybe.make = function (_elm) {
    "use strict";
    _elm.Maybe = _elm.Maybe || {};
@@ -3405,8 +3508,7 @@ Elm.Maybe.make = function (_elm) {
                        ,Just: Just
                        ,Nothing: Nothing};
    return _elm.Maybe.values;
-};
-Elm.Native.Basics = {};
+};Elm.Native.Basics = {};
 Elm.Native.Basics.make = function(localRuntime) {
 
 	localRuntime.Native = localRuntime.Native || {};
@@ -3543,7 +3645,6 @@ Elm.Native.Basics.make = function(localRuntime) {
 		isInfinite: isInfinite
 	};
 };
-
 Elm.Native.Char = {};
 Elm.Native.Char.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -3564,7 +3665,6 @@ Elm.Native.Char.make = function(localRuntime) {
 		toLocaleLower : function(c) { return Utils.chr(c.toLocaleLowerCase()); },
 	};
 };
-
 Elm.Native.Color = {};
 Elm.Native.Color.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -3605,7 +3705,6 @@ Elm.Native.Color.make = function(localRuntime) {
 	};
 
 };
-
 Elm.Native.Debug = {};
 Elm.Native.Debug.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -3672,7 +3771,6 @@ Elm.Native.Debug.make = function(localRuntime) {
 		watchSummary:F3(watchSummary),
 	};
 };
-
 
 // setup
 Elm.Native = Elm.Native || {};
@@ -4333,7 +4431,6 @@ Elm.Native.Graphics.Collage.make = function(localRuntime) {
 	};
 
 };
-
 
 // setup
 Elm.Native = Elm.Native || {};
@@ -5049,7 +5146,6 @@ Elm.Native.Graphics.Element.make = function(localRuntime) {
 	};
 
 };
-
 Elm.Native.Keyboard = {};
 Elm.Native.Keyboard.make = function(localRuntime) {
 
@@ -5099,7 +5195,6 @@ Elm.Native.Keyboard.make = function(localRuntime) {
 	};
 
 };
-
 Elm.Native.List = {};
 Elm.Native.List.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -5325,7 +5420,6 @@ Elm.Native.List.make = function(localRuntime) {
 	return localRuntime.Native.List.values = Elm.Native.List.values;
 
 };
-
 Elm.Native.Port = {};
 Elm.Native.Port.make = function(localRuntime) {
 
@@ -5459,7 +5553,6 @@ Elm.Native.Port.make = function(localRuntime) {
 		outboundSignal: outboundSignal
 	};
 };
-
 
 if (!Elm.fullscreen) {
 
@@ -6098,7 +6191,6 @@ if (!Elm.fullscreen) {
 			: fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 	}
 }
-
 Elm.Native.Show = {};
 Elm.Native.Show.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -6290,7 +6382,6 @@ Elm.Native.Show.make = function(localRuntime) {
 		toString: toString
 	};
 };
-
 Elm.Native.Signal = {};
 Elm.Native.Signal.make = function(localRuntime) {
 
@@ -6763,7 +6854,6 @@ Elm.Native.Signal.make = function(localRuntime) {
 		delay: F2(delay)
 	};
 };
-
 Elm.Native.String = {};
 Elm.Native.String.make = function(localRuntime) {
 
@@ -7106,7 +7196,6 @@ Elm.Native.String.make = function(localRuntime) {
 		fromList: fromList
 	};
 };
-
 Elm.Native.Task = {};
 Elm.Native.Task.make = function(localRuntime) {
 
@@ -7330,7 +7419,6 @@ Elm.Native.Task.make = function(localRuntime) {
 		sleep: sleep
 	};
 };
-
 Elm.Native.Text = {};
 Elm.Native.Text.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -7618,7 +7706,6 @@ Elm.Native.Text.make = function(localRuntime) {
 		renderHtml: renderHtml
 	};
 };
-
 Elm.Native.Time = {};
 Elm.Native.Time.make = function(localRuntime)
 {
@@ -7729,7 +7816,6 @@ Elm.Native.Time.make = function(localRuntime)
 	};
 
 };
-
 Elm.Native.Transform2D = {};
 Elm.Native.Transform2D.make = function(localRuntime) {
 
@@ -7842,7 +7928,6 @@ Elm.Native.Transform2D.make = function(localRuntime) {
 	};
 
 };
-
 Elm.Native = Elm.Native || {};
 Elm.Native.Utils = {};
 Elm.Native.Utils.make = function(localRuntime) {
@@ -8205,7 +8290,6 @@ Elm.Native.Utils.make = function(localRuntime) {
 		badPort: badPort
 	};
 };
-
 Elm.Native = Elm.Native || {};
 Elm.Native.Window = {};
 Elm.Native.Window.make = function(localRuntime) {
@@ -8274,7 +8358,6 @@ Elm.Native.Window.make = function(localRuntime) {
 		resizeIfNeeded: resizeIfNeeded
 	};
 };
-
 Elm.Result = Elm.Result || {};
 Elm.Result.make = function (_elm) {
    "use strict";
@@ -8518,8 +8601,7 @@ Elm.Result.make = function (_elm) {
                         ,Ok: Ok
                         ,Err: Err};
    return _elm.Result.values;
-};
-Elm.Set = Elm.Set || {};
+};Elm.Set = Elm.Set || {};
 Elm.Set.make = function (_elm) {
    "use strict";
    _elm.Set = _elm.Set || {};
@@ -8623,8 +8705,7 @@ Elm.Set.make = function (_elm) {
                      ,toList: toList
                      ,fromList: fromList};
    return _elm.Set.values;
-};
-Elm.Signal = Elm.Signal || {};
+};Elm.Signal = Elm.Signal || {};
 Elm.Signal.make = function (_elm) {
    "use strict";
    _elm.Signal = _elm.Signal || {};
@@ -8767,8 +8848,7 @@ Elm.Signal.make = function (_elm) {
                         ,forwardTo: forwardTo
                         ,Mailbox: Mailbox};
    return _elm.Signal.values;
-};
-Elm.String = Elm.String || {};
+};Elm.String = Elm.String || {};
 Elm.String.make = function (_elm) {
    "use strict";
    _elm.String = _elm.String || {};
@@ -8868,8 +8948,7 @@ Elm.String.make = function (_elm) {
                         ,any: any
                         ,all: all};
    return _elm.String.values;
-};
-Elm.Task = Elm.Task || {};
+};Elm.Task = Elm.Task || {};
 Elm.Task.make = function (_elm) {
    "use strict";
    _elm.Task = _elm.Task || {};
@@ -9093,8 +9172,7 @@ Elm.Task.make = function (_elm) {
                       ,spawn: spawn
                       ,sleep: sleep};
    return _elm.Task.values;
-};
-Elm.Text = Elm.Text || {};
+};Elm.Text = Elm.Text || {};
 Elm.Text.make = function (_elm) {
    "use strict";
    _elm.Text = _elm.Text || {};
@@ -9179,8 +9257,7 @@ Elm.Text.make = function (_elm) {
                       ,Over: Over
                       ,Through: Through};
    return _elm.Text.values;
-};
-Elm.Time = Elm.Time || {};
+};Elm.Time = Elm.Time || {};
 Elm.Time.make = function (_elm) {
    "use strict";
    _elm.Time = _elm.Time || {};
@@ -9258,8 +9335,7 @@ Elm.Time.make = function (_elm) {
                       ,delay: delay
                       ,since: since};
    return _elm.Time.values;
-};
-Elm.Transform2D = Elm.Transform2D || {};
+};Elm.Transform2D = Elm.Transform2D || {};
 Elm.Transform2D.make = function (_elm) {
    "use strict";
    _elm.Transform2D = _elm.Transform2D || {};
@@ -9323,8 +9399,7 @@ Elm.Transform2D.make = function (_elm) {
                              ,scaleX: scaleX
                              ,scaleY: scaleY};
    return _elm.Transform2D.values;
-};
-Elm.Window = Elm.Window || {};
+};Elm.Window = Elm.Window || {};
 Elm.Window.make = function (_elm) {
    "use strict";
    _elm.Window = _elm.Window || {};
@@ -9350,4 +9425,4 @@ Elm.Window.make = function (_elm) {
                         ,width: width
                         ,height: height};
    return _elm.Window.values;
-};
+};</script></head><body><script type="text/javascript">Elm.fullscreen(Elm.Main)</script></body></html>
