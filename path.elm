@@ -3,8 +3,24 @@ module Path where
 type alias Position = (Float, Float)
 type alias Rotation = Float
 type alias Length   = Float
+
+calcEndPos : Position -> Rotation -> Length -> Position
+calcEndPos (x, y) rotation length =
+  let endX = x + (length * cos rotation)
+      endY = y + (length * sin rotation)
+  in (endX, endY)
+
+type alias Stack = List(Position, Rotation)
+
+push : (Position, Rotation) -> Stack -> Stack
+push x stack = x::stack
+
+pop : Stack -> ((Position, Rotation), Stack)
+pop (hd::tl) = (hd, tl)
+
 type alias CanvasArea = 
   {topL:Position, topR:Position, bottomL:Position, bottomR:Position}
+
 defaultCanvasArea =
   {topL=(0,0), topR=(0,0), bottomL=(0,0), bottomR=(0,0)}
 
@@ -19,12 +35,6 @@ canvasCentre {bottomL, bottomR, topL, topR} =
   let centreX = (fst topL + fst topR)/2
       centreY = (snd topL + snd bottomL)/2
   in (centreX, centreY)
-
-calcEndPos : Position -> Rotation -> Length -> Position
-calcEndPos (x, y) rotation length =
-  let endX = x + (length * cos rotation)
-      endY = y + (length * sin rotation)
-  in (endX, endY)
 
 updateCanvasArea : CanvasArea -> Position -> CanvasArea
 updateCanvasArea area pos =

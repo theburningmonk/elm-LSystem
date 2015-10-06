@@ -78,7 +78,7 @@ display (w,h) state =
       content = 
         group segs
         |> scale scaleFactor
-        |> move (-canvasWidth*scaleFactor/2, -canvasHeight*scaleFactor/2)        
+        |> move (-canvasWidth*scaleFactor/2, -canvasHeight*scaleFactor/2)
   in (collage w h [content])
 
 main = display <~ Window.dimensions ~ (states kochCurve)
