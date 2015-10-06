@@ -3212,7 +3212,6 @@ Elm.Main.make = function (_elm) {
    $Path = Elm.Path.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm),
    $Window = Elm.Window.make(_elm);
    var draw = F2(function (pos,
    endPos) {
@@ -3220,15 +3219,24 @@ Elm.Main.make = function (_elm) {
       pos,
       endPos));
    });
-   var fractalPlant = {_: {}
-                      ,axiom: _L.fromArray([_U.chr("X")])
-                      ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                           ,_0: _U.chr("X")
-                                                           ,_1: $String.toList("F−[[X]+X]+F[+FX]−X")}
-                                                          ,{ctor: "_Tuple2"
-                                                           ,_0: _U.chr("F")
-                                                           ,_1: $String.toList("FF")}]))};
-   var angle = $Basics.degrees(25);
+   var dragonCurve = {_: {}
+                     ,axiom: _L.fromArray([_U.chr("F")
+                                          ,_U.chr("X")])
+                     ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                          ,_0: _U.chr("X")
+                                                          ,_1: _L.fromArray([_U.chr("X")
+                                                                            ,_U.chr("+")
+                                                                            ,_U.chr("Y")
+                                                                            ,_U.chr("F")
+                                                                            ,_U.chr("+")])}
+                                                         ,{ctor: "_Tuple2"
+                                                          ,_0: _U.chr("Y")
+                                                          ,_1: _L.fromArray([_U.chr("-")
+                                                                            ,_U.chr("F")
+                                                                            ,_U.chr("X")
+                                                                            ,_U.chr("-")
+                                                                            ,_U.chr("Y")])}]))};
+   var angle = $Basics.pi / 2;
    var display = F2(function (_v0,
    state) {
       return function () {
@@ -3238,7 +3246,6 @@ Elm.Main.make = function (_elm) {
                  var _ = $Debug.watch("windowDimension")({ctor: "_Tuple2"
                                                          ,_0: _v0._0
                                                          ,_1: _v0._1});
-                 var stackStack = _L.fromArray([]);
                  var startRot = 0;
                  var startPos = {ctor: "_Tuple2"
                                 ,_0: 0
@@ -3247,7 +3254,7 @@ Elm.Main.make = function (_elm) {
                  F2(function (sym,_v4) {
                     return function () {
                        switch (_v4.ctor)
-                       {case "_Tuple5":
+                       {case "_Tuple4":
                           return _U.eq(sym,
                             _U.chr("F")) ? function () {
                                var endPos = A3($Path.calcEndPos,
@@ -3259,106 +3266,50 @@ Elm.Main.make = function (_elm) {
                                endPos);
                                var newAcc = A2($List._op["::"],
                                newSeg,
-                               _v4._3);
+                               _v4._2);
                                var newCanvasArea = A2($Path.updateCanvasArea,
-                               _v4._4,
+                               _v4._3,
                                endPos);
-                               return {ctor: "_Tuple5"
+                               return {ctor: "_Tuple4"
                                       ,_0: endPos
                                       ,_1: _v4._1
-                                      ,_2: _v4._2
-                                      ,_3: newAcc
-                                      ,_4: newCanvasArea};
+                                      ,_2: newAcc
+                                      ,_3: newCanvasArea};
                             }() : _U.eq(sym,
-                            _U.chr("+")) ? {ctor: "_Tuple5"
-                                           ,_0: _v4._0
-                                           ,_1: _v4._1 + angle
-                                           ,_2: _v4._2
-                                           ,_3: _v4._3
-                                           ,_4: _v4._4} : _U.eq(sym,
-                            _U.chr("-")) ? {ctor: "_Tuple5"
+                            _U.chr("+")) ? {ctor: "_Tuple4"
                                            ,_0: _v4._0
                                            ,_1: _v4._1 - angle
                                            ,_2: _v4._2
-                                           ,_3: _v4._3
-                                           ,_4: _v4._4} : _U.eq(sym,
-                            _U.chr("[")) ? function () {
-                               var newStack = A2($Path.push,
-                               {ctor: "_Tuple2"
-                               ,_0: _v4._0
-                               ,_1: _v4._1},
-                               _v4._2);
-                               return {ctor: "_Tuple5"
-                                      ,_0: _v4._0
-                                      ,_1: _v4._1
-                                      ,_2: newStack
-                                      ,_3: _v4._3
-                                      ,_4: _v4._4};
-                            }() : _U.eq(sym,
-                            _U.chr("]")) ? function () {
-                               var _ = $Path.pop(_v4._2);
-                               var newPos = function () {
-                                  switch (_.ctor)
-                                  {case "_Tuple2":
-                                     switch (_._0.ctor)
-                                       {case "_Tuple2":
-                                          return _._0._0;}
-                                       break;}
-                                  _U.badCase($moduleName,
-                                  "on line 48, column 57 to 66");
-                               }();
-                               var newRotation = function () {
-                                  switch (_.ctor)
-                                  {case "_Tuple2":
-                                     switch (_._0.ctor)
-                                       {case "_Tuple2":
-                                          return _._0._1;}
-                                       break;}
-                                  _U.badCase($moduleName,
-                                  "on line 48, column 57 to 66");
-                               }();
-                               var newStack = function () {
-                                  switch (_.ctor)
-                                  {case "_Tuple2":
-                                     switch (_._0.ctor)
-                                       {case "_Tuple2": return _._1;}
-                                       break;}
-                                  _U.badCase($moduleName,
-                                  "on line 48, column 57 to 66");
-                               }();
-                               return {ctor: "_Tuple5"
-                                      ,_0: newPos
-                                      ,_1: newRotation
-                                      ,_2: newStack
-                                      ,_3: _v4._3
-                                      ,_4: _v4._4};
-                            }() : {ctor: "_Tuple5"
-                                  ,_0: _v4._0
-                                  ,_1: _v4._1
-                                  ,_2: _v4._2
-                                  ,_3: _v4._3
-                                  ,_4: _v4._4};}
+                                           ,_3: _v4._3} : _U.eq(sym,
+                            _U.chr("-")) ? {ctor: "_Tuple4"
+                                           ,_0: _v4._0
+                                           ,_1: _v4._1 + angle
+                                           ,_2: _v4._2
+                                           ,_3: _v4._3} : {ctor: "_Tuple4"
+                                                          ,_0: _v4._0
+                                                          ,_1: _v4._1
+                                                          ,_2: _v4._2
+                                                          ,_3: _v4._3};}
                        _U.badCase($moduleName,
-                       "between lines 36 and 50");
+                       "between lines 34 and 42");
                     }();
                  }),
-                 {ctor: "_Tuple5"
+                 {ctor: "_Tuple4"
                  ,_0: startPos
                  ,_1: startRot
-                 ,_2: stackStack
-                 ,_3: _L.fromArray([])
-                 ,_4: $Path.defaultCanvasArea})(state);
+                 ,_2: _L.fromArray([])
+                 ,_3: $Path.defaultCanvasArea})(state);
                  var canvasArea = function () {
                     switch (_.ctor)
-                    {case "_Tuple5": return _._4;}
+                    {case "_Tuple4": return _._3;}
                     _U.badCase($moduleName,
-                    "between lines 35 and 51");
+                    "between lines 33 and 43");
                  }();
                  var segs = function () {
                     switch (_.ctor)
-                    {case "_Tuple5": return _._3;}
+                    {case "_Tuple4": return _._2;}
                     _U.badCase($moduleName,
-                    "between lines 35 and 51");
+                    "between lines 33 and 43");
                  }();
                  var $ = $Path.canvasDimension(canvasArea),
                  canvasWidth = $._0,
@@ -3377,25 +3328,25 @@ Elm.Main.make = function (_elm) {
                  centreX = $._0,
                  centreY = $._1;
                  var content = $Graphics$Collage.move({ctor: "_Tuple2"
-                                                      ,_0: (0 - canvasWidth) * scaleFactor / 2
-                                                      ,_1: (0 - canvasHeight) * scaleFactor / 2})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segs)));
+                                                      ,_0: (0 - centreX) * scaleFactor
+                                                      ,_1: (0 - centreY) * scaleFactor})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segs)));
                  return A3($Graphics$Collage.collage,
                  _v0._0,
                  _v0._1,
                  _L.fromArray([content]));
               }();}
          _U.badCase($moduleName,
-         "between lines 31 and 66");
+         "between lines 30 and 58");
       }();
    });
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    display,
    $Window.dimensions),
-   $Core.states(fractalPlant));
+   $Core.states(dragonCurve));
    _elm.Main.values = {_op: _op
                       ,angle: angle
-                      ,fractalPlant: fractalPlant
+                      ,dragonCurve: dragonCurve
                       ,draw: draw
                       ,display: display
                       ,main: main};

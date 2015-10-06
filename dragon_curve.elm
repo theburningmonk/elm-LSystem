@@ -54,7 +54,7 @@ display (w,h) state =
       content = 
         group segs
         |> scale scaleFactor
-        |> move (-centreX, -centreY)
+        |> move (-centreX*scaleFactor, -centreY*scaleFactor)
   in (collage w h [content])
 
 main = display <~ Window.dimensions ~ (states dragonCurve)
