@@ -21,7 +21,9 @@ cantorDust =
 
 drawState : Float -> Float -> State -> List(Form)
 drawState winWidth y state =
-  let len = List.length state |> toFloat |> Debug.watch "count"
+  let len = List.length state 
+            |> toFloat 
+            |> Debug.watch "count"
       rectWidth = winWidth / len
       startX = -winWidth/2 + rectWidth/2
       xs = [0..(List.length state-1)] 
@@ -48,7 +50,8 @@ display (w,h) states =
         |> List.map (\n -> -rectHeight * n * 2 + toFloat h/3)
         -- above is to calc the y position for each state
         -- including whitespaces between states
-        |> List.map2 (\state y -> drawState (toFloat w) y state) states 
+        |> List.map2 (\state y -> 
+            drawState (toFloat w) y state) states 
         |> List.concat
   in collage w h (bg::content)
 

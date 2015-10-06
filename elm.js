@@ -3241,7 +3241,7 @@ Elm.Main.make = function (_elm) {
                        _v1._1));
                     }();}
                _U.badCase($moduleName,
-               "on line 61, column 13 to 36");
+               "on line 64, column 13 to 36");
             }();
          }),
          _L.fromArray([axiom]))(_L.range(1,
@@ -3276,7 +3276,7 @@ Elm.Main.make = function (_elm) {
                   {case "A": return $Color.black;
                      case "B": return $Color.white;}
                   _U.badCase($moduleName,
-                  "between lines 33 and 36");
+                  "between lines 35 and 38");
                }();
                return $Graphics$Collage.move({ctor: "_Tuple2"
                                              ,_0: x
@@ -3316,7 +3316,7 @@ Elm.Main.make = function (_elm) {
                  A2($List._op["::"],bg,content));
               }();}
          _U.badCase($moduleName,
-         "between lines 44 and 53");
+         "between lines 46 and 56");
       }();
    });
    var main = A2($Signal._op["~"],
