@@ -14,6 +14,12 @@ canvasDimension area =
       height = (snd area.topL) - (snd area.bottomL)
   in (width, height)
 
+canvasCentre : CanvasArea -> (Float, Float)
+canvasCentre {bottomL, bottomR, topL, topR} =
+  let centreX = (fst topL + fst topR)/2
+      centreY = (snd topL + snd bottomL)/2
+  in (centreX, centreY)
+
 calcEndPos : Position -> Rotation -> Length -> Position
 calcEndPos (x, y) rotation length =
   let endX = x + (length * cos rotation)
