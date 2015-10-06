@@ -3319,8 +3319,8 @@ Elm.Main.make = function (_elm) {
                  centreX = $._0,
                  centreY = $._1;
                  var content = $Graphics$Collage.move({ctor: "_Tuple2"
-                                                      ,_0: 0 - centreX
-                                                      ,_1: 0 - centreY})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segs)));
+                                                      ,_0: (0 - centreX) * scaleFactor
+                                                      ,_1: (0 - centreY) * scaleFactor})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segs)));
                  return A3($Graphics$Collage.collage,
                  _v0._0,
                  _v0._1,
@@ -8299,10 +8299,10 @@ Elm.Path.make = function (_elm) {
                                  _v0._1,
                                  _v1._1)};}
                        _U.badCase($moduleName,
-                       "on line 32, column 6 to 36");
+                       "on line 42, column 6 to 36");
                     }();}
                _U.badCase($moduleName,
-               "on line 32, column 6 to 36");
+               "on line 42, column 6 to 36");
             }();
          });
          return {_: {}
@@ -8328,28 +8328,11 @@ Elm.Path.make = function (_elm) {
                 pos)};
       }();
    });
-   var calcEndPos = F3(function (_v8,
-   rotation,
-   length) {
-      return function () {
-         switch (_v8.ctor)
-         {case "_Tuple2":
-            return function () {
-                 var endY = _v8._1 + length * $Basics.sin(rotation);
-                 var endX = _v8._0 + length * $Basics.cos(rotation);
-                 return {ctor: "_Tuple2"
-                        ,_0: endX
-                        ,_1: endY};
-              }();}
-         _U.badCase($moduleName,
-         "between lines 25 and 27");
-      }();
-   });
-   var canvasCentre = function (_v12) {
+   var canvasCentre = function (_v8) {
       return function () {
          return function () {
-            var centreY = ($Basics.snd(_v12.topL) + $Basics.snd(_v12.bottomL)) / 2;
-            var centreX = ($Basics.fst(_v12.topL) + $Basics.fst(_v12.topR)) / 2;
+            var centreY = ($Basics.snd(_v8.topL) + $Basics.snd(_v8.bottomL)) / 2;
+            var centreX = ($Basics.fst(_v8.topL) + $Basics.fst(_v8.topR)) / 2;
             return {ctor: "_Tuple2"
                    ,_0: centreX
                    ,_1: centreY};
@@ -8388,12 +8371,48 @@ Elm.Path.make = function (_elm) {
              ,topL: a
              ,topR: b};
    });
+   var pop = function (_v10) {
+      return function () {
+         switch (_v10.ctor)
+         {case "::":
+            return {ctor: "_Tuple2"
+                   ,_0: _v10._0
+                   ,_1: _v10._1};}
+         _U.badCase($moduleName,
+         "on line 19, column 17 to 23");
+      }();
+   };
+   var push = F2(function (x,
+   stack) {
+      return A2($List._op["::"],
+      x,
+      stack);
+   });
+   var calcEndPos = F3(function (_v14,
+   rotation,
+   length) {
+      return function () {
+         switch (_v14.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var endY = _v14._1 + length * $Basics.sin(rotation);
+                 var endX = _v14._0 + length * $Basics.cos(rotation);
+                 return {ctor: "_Tuple2"
+                        ,_0: endX
+                        ,_1: endY};
+              }();}
+         _U.badCase($moduleName,
+         "between lines 9 and 11");
+      }();
+   });
    _elm.Path.values = {_op: _op
+                      ,calcEndPos: calcEndPos
+                      ,push: push
+                      ,pop: pop
                       ,CanvasArea: CanvasArea
                       ,defaultCanvasArea: defaultCanvasArea
                       ,canvasDimension: canvasDimension
                       ,canvasCentre: canvasCentre
-                      ,calcEndPos: calcEndPos
                       ,updateCanvasArea: updateCanvasArea};
    return _elm.Path.values;
 };Elm.Result = Elm.Result || {};
