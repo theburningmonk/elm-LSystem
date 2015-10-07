@@ -7,52 +7,34 @@ import Color exposing (..)
 import List
 import Dict
 import Signal exposing (..)
+import String
 import Window
 import Debug
 
 type alias Position = Path.Position
 
-angle = -pi/3*2 -- 120 degrees
+angle = degrees -120 -- 120 degrees
 
 sierpinskiTri : LSystem
 sierpinskiTri =
   { axiom = [ 'F', '-', 'G', '-', 'G' ],
     rules = Dict.fromList [ 
-              ('F', [ 'F', '-', 'G', '+', 'F', '+', 'G', '-', 'F' ]),
-              ('G', [ 'G', 'G' ])
+              ('F', String.toList "F-G+F+G-F"),
+              ('G', String.toList "GG")
             ] }
 
-draw : Position -> Position -> Form
-draw pos endPos = segment pos endPos |> traced (solid black)
-
-display : (Int,Int) -> State -> Element
-display (w,h) state = 
-  let startPos = (0, 0)
-      startRot = 0
-      (_, _, segs, canvasArea) =
+draw startPos startRot state =
+  let (_, _, segs, canvasArea) =
         state |> List.foldl (\sym (pos, rotation, acc, canvasArea) ->
             if | sym == 'F' || sym == 'G' ->
                 let endPos = calcEndPos pos rotation 10
-                    newSeg = draw pos endPos
+                    newSeg = segment pos endPos |> traced (solid black)
                     newAcc = newSeg::acc
                     newCanvasArea = updateCanvasArea canvasArea endPos
                 in (endPos, rotation, newAcc, newCanvasArea)
                | sym == '+' -> (pos, rotation+angle, acc, canvasArea)
                | sym == '-' -> (pos, rotation-angle, acc, canvasArea)
           ) (startPos, startRot, [], defaultCanvasArea)
-      (canvasWidth, canvasHeight) = canvasDimension canvasArea
-      _ = (canvasWidth, canvasHeight) |> Debug.watch "canvasDimension"
-      _ = (w, h) |> Debug.watch "windowDimension"
-      _ = canvasArea |> Debug.watch "canvas_area"
-      scaleFactor = 
-        if canvasWidth > (toFloat w) || canvasHeight > (toFloat h)
-        then min (toFloat w / canvasWidth) (toFloat h / canvasHeight)
-        else 1.0
-      _ = scaleFactor |> Debug.watch "scaleFactor"
-      content = 
-        group segs
-        |> scale scaleFactor
-        |> move (-canvasWidth*scaleFactor/2, -canvasHeight*scaleFactor/2)        
-  in (collage w h [content])
+  in (segs, canvasArea)
 
-main = display <~ Window.dimensions ~ (states sierpinskiTri)
+main = (display draw) <~ Window.dimensions ~ (states sierpinskiTri)
