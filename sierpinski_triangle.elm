@@ -13,8 +13,6 @@ import Debug
 
 type alias Position = Path.Position
 
-angle = pi/3 -- 60 degrees
-
 sierpinskiTri : LSystem
 sierpinskiTri =
   { axiom = [ 'A' ],
@@ -24,7 +22,8 @@ sierpinskiTri =
             ] }
 
 draw startPos startRot state =
-  let (_, _, segs, canvasArea) =
+  let angle = degrees 60
+      (_, _, segs, canvasArea) =
         state |> List.foldl (\sym (pos, rotation, acc, canvasArea) ->
             if | sym == 'A' || sym == 'B' ->
                 let endPos = calcEndPos pos rotation 10

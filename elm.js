@@ -3216,50 +3216,47 @@ Elm.Main.make = function (_elm) {
    startRot,
    state) {
       return function () {
+         var angle = $Basics.degrees(-120);
          var _ = A2($List.foldl,
          F2(function (sym,_v0) {
             return function () {
                switch (_v0.ctor)
                {case "_Tuple4":
-                  return function () {
-                       switch (sym + "")
-                       {case "+":
-                          return {ctor: "_Tuple4"
-                                 ,_0: _v0._0
-                                 ,_1: _v0._1 + $Basics.pi / 2
-                                 ,_2: _v0._2
-                                 ,_3: _v0._3};
-                          case "-":
-                          return {ctor: "_Tuple4"
-                                 ,_0: _v0._0
-                                 ,_1: _v0._1 - $Basics.pi / 2
-                                 ,_2: _v0._2
-                                 ,_3: _v0._3};
-                          case "F": return function () {
-                               var endPos = A3($Path.calcEndPos,
-                               _v0._0,
-                               _v0._1,
-                               10);
-                               var newSeg = $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
-                               _v0._0,
-                               endPos));
-                               var newAcc = A2($List._op["::"],
-                               newSeg,
-                               _v0._2);
-                               var newCanvasArea = A2($Path.updateCanvasArea,
-                               _v0._3,
-                               endPos);
-                               return {ctor: "_Tuple4"
-                                      ,_0: endPos
-                                      ,_1: _v0._1
-                                      ,_2: newAcc
-                                      ,_3: newCanvasArea};
-                            }();}
-                       _U.badCase($moduleName,
-                       "between lines 26 and 35");
-                    }();}
+                  return _U.eq(sym,
+                    _U.chr("F")) || _U.eq(sym,
+                    _U.chr("G")) ? function () {
+                       var endPos = A3($Path.calcEndPos,
+                       _v0._0,
+                       _v0._1,
+                       10);
+                       var newSeg = $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
+                       _v0._0,
+                       endPos));
+                       var newAcc = A2($List._op["::"],
+                       newSeg,
+                       _v0._2);
+                       var newCanvasArea = A2($Path.updateCanvasArea,
+                       _v0._3,
+                       endPos);
+                       return {ctor: "_Tuple4"
+                              ,_0: endPos
+                              ,_1: _v0._1
+                              ,_2: newAcc
+                              ,_3: newCanvasArea};
+                    }() : _U.eq(sym,
+                    _U.chr("+")) ? {ctor: "_Tuple4"
+                                   ,_0: _v0._0
+                                   ,_1: _v0._1 + angle
+                                   ,_2: _v0._2
+                                   ,_3: _v0._3} : _U.eq(sym,
+                    _U.chr("-")) ? {ctor: "_Tuple4"
+                                   ,_0: _v0._0
+                                   ,_1: _v0._1 - angle
+                                   ,_2: _v0._2
+                                   ,_3: _v0._3} : _U.badIf($moduleName,
+                    "between lines 28 and 35");}
                _U.badCase($moduleName,
-               "between lines 26 and 35");
+               "between lines 28 and 35");
             }();
          }),
          {ctor: "_Tuple4"
@@ -3271,31 +3268,38 @@ Elm.Main.make = function (_elm) {
             switch (_.ctor)
             {case "_Tuple4": return _._3;}
             _U.badCase($moduleName,
-            "between lines 25 and 35");
+            "between lines 27 and 36");
          }();
          var segs = function () {
             switch (_.ctor)
             {case "_Tuple4": return _._2;}
             _U.badCase($moduleName,
-            "between lines 25 and 35");
+            "between lines 27 and 36");
          }();
          return {ctor: "_Tuple2"
                 ,_0: segs
                 ,_1: canvasArea};
       }();
    });
-   var kochCurve = {_: {}
-                   ,axiom: _L.fromArray([_U.chr("F")])
-                   ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                        ,_0: _U.chr("F")
-                                                        ,_1: $String.toList("F+F-F-F+F")}]))};
+   var sierpinskiTri = {_: {}
+                       ,axiom: _L.fromArray([_U.chr("F")
+                                            ,_U.chr("-")
+                                            ,_U.chr("G")
+                                            ,_U.chr("-")
+                                            ,_U.chr("G")])
+                       ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                            ,_0: _U.chr("F")
+                                                            ,_1: $String.toList("F-G+F+G-F")}
+                                                           ,{ctor: "_Tuple2"
+                                                            ,_0: _U.chr("G")
+                                                            ,_1: $String.toList("GG")}]))};
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    $Path.display(draw),
    $Window.dimensions),
-   $Core.states(kochCurve));
+   $Core.states(sierpinskiTri));
    _elm.Main.values = {_op: _op
-                      ,kochCurve: kochCurve
+                      ,sierpinskiTri: sierpinskiTri
                       ,draw: draw
                       ,main: main};
    return _elm.Main.values;
