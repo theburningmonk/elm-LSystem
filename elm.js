@@ -3203,10 +3203,8 @@ Elm.Main.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Color = Elm.Color.make(_elm),
    $Core = Elm.Core.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
    $Dict = Elm.Dict.make(_elm),
    $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
-   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Path = Elm.Path.make(_elm),
@@ -3214,190 +3212,91 @@ Elm.Main.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var draw = F2(function (pos,
-   endPos) {
-      return $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
-      pos,
-      endPos));
-   });
-   var fractalPlant = {_: {}
-                      ,axiom: _L.fromArray([_U.chr("X")])
-                      ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                           ,_0: _U.chr("X")
-                                                           ,_1: $String.toList("F−[[X]+X]+F[+FX]−X")}
-                                                          ,{ctor: "_Tuple2"
-                                                           ,_0: _U.chr("F")
-                                                           ,_1: $String.toList("FF")}]))};
-   var angle = $Basics.degrees(25);
-   var display = F2(function (_v0,
+   var draw = F3(function (startPos,
+   startRot,
    state) {
       return function () {
-         switch (_v0.ctor)
-         {case "_Tuple2":
+         var _ = A2($List.foldl,
+         F2(function (sym,_v0) {
             return function () {
-                 var _ = $Debug.watch("windowDimension")({ctor: "_Tuple2"
-                                                         ,_0: _v0._0
-                                                         ,_1: _v0._1});
-                 var stackStack = _L.fromArray([]);
-                 var startRot = 0;
-                 var startPos = {ctor: "_Tuple2"
-                                ,_0: 0
-                                ,_1: 0};
-                 var _ = A2($List.foldl,
-                 F2(function (sym,_v4) {
-                    return function () {
-                       switch (_v4.ctor)
-                       {case "_Tuple5":
-                          return _U.eq(sym,
-                            _U.chr("F")) ? function () {
+               switch (_v0.ctor)
+               {case "_Tuple4":
+                  return function () {
+                       switch (sym + "")
+                       {case "+":
+                          return {ctor: "_Tuple4"
+                                 ,_0: _v0._0
+                                 ,_1: _v0._1 + $Basics.pi / 2
+                                 ,_2: _v0._2
+                                 ,_3: _v0._3};
+                          case "-":
+                          return {ctor: "_Tuple4"
+                                 ,_0: _v0._0
+                                 ,_1: _v0._1 - $Basics.pi / 2
+                                 ,_2: _v0._2
+                                 ,_3: _v0._3};
+                          case "F": return function () {
                                var endPos = A3($Path.calcEndPos,
-                               _v4._0,
-                               _v4._1,
+                               _v0._0,
+                               _v0._1,
                                10);
-                               var newSeg = A2(draw,
-                               _v4._0,
-                               endPos);
+                               var newSeg = $Graphics$Collage.traced($Graphics$Collage.solid($Color.black))(A2($Graphics$Collage.segment,
+                               _v0._0,
+                               endPos));
                                var newAcc = A2($List._op["::"],
                                newSeg,
-                               _v4._3);
+                               _v0._2);
                                var newCanvasArea = A2($Path.updateCanvasArea,
-                               _v4._4,
+                               _v0._3,
                                endPos);
-                               return {ctor: "_Tuple5"
+                               return {ctor: "_Tuple4"
                                       ,_0: endPos
-                                      ,_1: _v4._1
-                                      ,_2: _v4._2
-                                      ,_3: newAcc
-                                      ,_4: newCanvasArea};
-                            }() : _U.eq(sym,
-                            _U.chr("+")) ? {ctor: "_Tuple5"
-                                           ,_0: _v4._0
-                                           ,_1: _v4._1 + angle
-                                           ,_2: _v4._2
-                                           ,_3: _v4._3
-                                           ,_4: _v4._4} : _U.eq(sym,
-                            _U.chr("-")) ? {ctor: "_Tuple5"
-                                           ,_0: _v4._0
-                                           ,_1: _v4._1 - angle
-                                           ,_2: _v4._2
-                                           ,_3: _v4._3
-                                           ,_4: _v4._4} : _U.eq(sym,
-                            _U.chr("[")) ? function () {
-                               var newStack = A2($Path.push,
-                               {ctor: "_Tuple2"
-                               ,_0: _v4._0
-                               ,_1: _v4._1},
-                               _v4._2);
-                               return {ctor: "_Tuple5"
-                                      ,_0: _v4._0
-                                      ,_1: _v4._1
-                                      ,_2: newStack
-                                      ,_3: _v4._3
-                                      ,_4: _v4._4};
-                            }() : _U.eq(sym,
-                            _U.chr("]")) ? function () {
-                               var _ = $Path.pop(_v4._2);
-                               var newPos = function () {
-                                  switch (_.ctor)
-                                  {case "_Tuple2":
-                                     switch (_._0.ctor)
-                                       {case "_Tuple2":
-                                          return _._0._0;}
-                                       break;}
-                                  _U.badCase($moduleName,
-                                  "on line 48, column 57 to 66");
-                               }();
-                               var newRotation = function () {
-                                  switch (_.ctor)
-                                  {case "_Tuple2":
-                                     switch (_._0.ctor)
-                                       {case "_Tuple2":
-                                          return _._0._1;}
-                                       break;}
-                                  _U.badCase($moduleName,
-                                  "on line 48, column 57 to 66");
-                               }();
-                               var newStack = function () {
-                                  switch (_.ctor)
-                                  {case "_Tuple2":
-                                     switch (_._0.ctor)
-                                       {case "_Tuple2": return _._1;}
-                                       break;}
-                                  _U.badCase($moduleName,
-                                  "on line 48, column 57 to 66");
-                               }();
-                               return {ctor: "_Tuple5"
-                                      ,_0: newPos
-                                      ,_1: newRotation
-                                      ,_2: newStack
-                                      ,_3: _v4._3
-                                      ,_4: _v4._4};
-                            }() : {ctor: "_Tuple5"
-                                  ,_0: _v4._0
-                                  ,_1: _v4._1
-                                  ,_2: _v4._2
-                                  ,_3: _v4._3
-                                  ,_4: _v4._4};}
+                                      ,_1: _v0._1
+                                      ,_2: newAcc
+                                      ,_3: newCanvasArea};
+                            }();}
                        _U.badCase($moduleName,
-                       "between lines 36 and 50");
-                    }();
-                 }),
-                 {ctor: "_Tuple5"
-                 ,_0: startPos
-                 ,_1: startRot
-                 ,_2: stackStack
-                 ,_3: _L.fromArray([])
-                 ,_4: $Path.defaultCanvasArea})(state);
-                 var canvasArea = function () {
-                    switch (_.ctor)
-                    {case "_Tuple5": return _._4;}
-                    _U.badCase($moduleName,
-                    "between lines 35 and 51");
-                 }();
-                 var segs = function () {
-                    switch (_.ctor)
-                    {case "_Tuple5": return _._3;}
-                    _U.badCase($moduleName,
-                    "between lines 35 and 51");
-                 }();
-                 var $ = $Path.canvasDimension(canvasArea),
-                 canvasWidth = $._0,
-                 canvasHeight = $._1;
-                 var _ = $Debug.watch("canvasDimension")({ctor: "_Tuple2"
-                                                         ,_0: canvasWidth
-                                                         ,_1: canvasHeight});
-                 var scaleFactor = _U.cmp(canvasWidth,
-                 $Basics.toFloat(_v0._0)) > 0 || _U.cmp(canvasHeight,
-                 $Basics.toFloat(_v0._1)) > 0 ? A2($Basics.min,
-                 $Basics.toFloat(_v0._0) / canvasWidth,
-                 $Basics.toFloat(_v0._1) / canvasHeight) : 1.0;
-                 var _ = $Debug.watch("scaleFactor")(scaleFactor);
-                 var _ = $Debug.watch("canvas_area")(canvasArea);
-                 var $ = $Debug.watch("canvas_area_centre")($Path.canvasCentre(canvasArea)),
-                 centreX = $._0,
-                 centreY = $._1;
-                 var content = $Graphics$Collage.move({ctor: "_Tuple2"
-                                                      ,_0: (0 - centreX) * scaleFactor
-                                                      ,_1: (0 - centreY) * scaleFactor})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segs)));
-                 return A3($Graphics$Collage.collage,
-                 _v0._0,
-                 _v0._1,
-                 _L.fromArray([content]));
-              }();}
-         _U.badCase($moduleName,
-         "between lines 31 and 66");
+                       "between lines 26 and 35");
+                    }();}
+               _U.badCase($moduleName,
+               "between lines 26 and 35");
+            }();
+         }),
+         {ctor: "_Tuple4"
+         ,_0: startPos
+         ,_1: startRot
+         ,_2: _L.fromArray([])
+         ,_3: $Path.defaultCanvasArea})(state);
+         var canvasArea = function () {
+            switch (_.ctor)
+            {case "_Tuple4": return _._3;}
+            _U.badCase($moduleName,
+            "between lines 25 and 35");
+         }();
+         var segs = function () {
+            switch (_.ctor)
+            {case "_Tuple4": return _._2;}
+            _U.badCase($moduleName,
+            "between lines 25 and 35");
+         }();
+         return {ctor: "_Tuple2"
+                ,_0: segs
+                ,_1: canvasArea};
       }();
    });
+   var kochCurve = {_: {}
+                   ,axiom: _L.fromArray([_U.chr("F")])
+                   ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                        ,_0: _U.chr("F")
+                                                        ,_1: $String.toList("F+F-F-F+F")}]))};
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
-   display,
+   $Path.display(draw),
    $Window.dimensions),
-   $Core.states(fractalPlant));
+   $Core.states(kochCurve));
    _elm.Main.values = {_op: _op
-                      ,angle: angle
-                      ,fractalPlant: fractalPlant
+                      ,kochCurve: kochCurve
                       ,draw: draw
-                      ,display: display
                       ,main: main};
    return _elm.Main.values;
 };
@@ -8355,6 +8254,10 @@ Elm.Path.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Path",
    $Basics = Elm.Basics.make(_elm),
+   $Core = Elm.Core.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -8378,10 +8281,10 @@ Elm.Path.make = function (_elm) {
                                  _v0._1,
                                  _v1._1)};}
                        _U.badCase($moduleName,
-                       "on line 42, column 6 to 36");
+                       "on line 52, column 6 to 36");
                     }();}
                _U.badCase($moduleName,
-               "on line 42, column 6 to 36");
+               "on line 52, column 6 to 36");
             }();
          });
          return {_: {}
@@ -8427,6 +8330,48 @@ Elm.Path.make = function (_elm) {
                 ,_1: height};
       }();
    };
+   var display = F3(function (draw,
+   _v10,
+   state) {
+      return function () {
+         switch (_v10.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var _ = $Debug.watch("window_dimension")({ctor: "_Tuple2"
+                                                          ,_0: _v10._0
+                                                          ,_1: _v10._1});
+                 var startRot = 0;
+                 var startPos = {ctor: "_Tuple2"
+                                ,_0: 0
+                                ,_1: 0};
+                 var $ = A3(draw,
+                 startPos,
+                 startRot,
+                 state),
+                 segments = $._0,
+                 canvasArea = $._1;
+                 var _ = $Debug.watch("canvas_area")(canvasArea);
+                 var $ = $Debug.watch("canvas_dimension")(canvasDimension(canvasArea)),
+                 canvasW = $._0,
+                 canvasH = $._1;
+                 var scaleFactor = _U.cmp(canvasW,
+                 $Basics.toFloat(_v10._0)) > 0 || _U.cmp(canvasH,
+                 $Basics.toFloat(_v10._1)) > 0 ? A2($Basics.min,
+                 $Basics.toFloat(_v10._0) / canvasW,
+                 $Basics.toFloat(_v10._1) / canvasH) : 1.0;
+                 var _ = $Debug.watch("scale_factor")(scaleFactor);
+                 var content = $Graphics$Collage.move({ctor: "_Tuple2"
+                                                      ,_0: (0 - canvasW) * scaleFactor / 2
+                                                      ,_1: (0 - canvasH) * scaleFactor / 2})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segments)));
+                 return A3($Graphics$Collage.collage,
+                 _v10._0,
+                 _v10._1,
+                 _L.fromArray([content]));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 65 and 81");
+      }();
+   });
    var defaultCanvasArea = {_: {}
                            ,bottomL: {ctor: "_Tuple2"
                                      ,_0: 0
@@ -8450,15 +8395,15 @@ Elm.Path.make = function (_elm) {
              ,topL: a
              ,topR: b};
    });
-   var pop = function (_v10) {
+   var pop = function (_v14) {
       return function () {
-         switch (_v10.ctor)
+         switch (_v14.ctor)
          {case "::":
             return {ctor: "_Tuple2"
-                   ,_0: _v10._0
-                   ,_1: _v10._1};}
+                   ,_0: _v14._0
+                   ,_1: _v14._1};}
          _U.badCase($moduleName,
-         "on line 19, column 17 to 23");
+         "on line 24, column 17 to 23");
       }();
    };
    var push = F2(function (x,
@@ -8467,21 +8412,21 @@ Elm.Path.make = function (_elm) {
       x,
       stack);
    });
-   var calcEndPos = F3(function (_v14,
+   var calcEndPos = F3(function (_v18,
    rotation,
    length) {
       return function () {
-         switch (_v14.ctor)
+         switch (_v18.ctor)
          {case "_Tuple2":
             return function () {
-                 var endY = _v14._1 + length * $Basics.sin(rotation);
-                 var endX = _v14._0 + length * $Basics.cos(rotation);
+                 var endY = _v18._1 + length * $Basics.sin(rotation);
+                 var endX = _v18._0 + length * $Basics.cos(rotation);
                  return {ctor: "_Tuple2"
                         ,_0: endX
                         ,_1: endY};
               }();}
          _U.badCase($moduleName,
-         "between lines 9 and 11");
+         "between lines 14 and 16");
       }();
    });
    _elm.Path.values = {_op: _op
@@ -8492,7 +8437,8 @@ Elm.Path.make = function (_elm) {
                       ,defaultCanvasArea: defaultCanvasArea
                       ,canvasDimension: canvasDimension
                       ,canvasCentre: canvasCentre
-                      ,updateCanvasArea: updateCanvasArea};
+                      ,updateCanvasArea: updateCanvasArea
+                      ,display: display};
    return _elm.Path.values;
 };
 Elm.Result = Elm.Result || {};

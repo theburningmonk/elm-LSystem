@@ -1,5 +1,10 @@
 module Path where
 
+import Core exposing (State)
+import Graphics.Collage exposing (..)
+import Graphics.Element exposing (..)
+import Debug
+
 type alias Position = (Float, Float)
 type alias Rotation = Float
 type alias Length   = Float
@@ -19,7 +24,12 @@ pop : Stack -> ((Position, Rotation), Stack)
 pop (hd::tl) = (hd, tl)
 
 type alias CanvasArea = 
-  {topL:Position, topR:Position, bottomL:Position, bottomR:Position}
+  {
+    topL:Position, 
+    topR:Position, 
+    bottomL:Position, 
+    bottomR:Position
+  }
 
 defaultCanvasArea =
   {topL=(0,0), topR=(0,0), bottomL=(0,0), bottomR=(0,0)}
@@ -46,3 +56,26 @@ updateCanvasArea area pos =
         bottomL = f min min area.bottomL pos,
         bottomR = f max min area.bottomR pos
      }
+
+type alias Draw =
+  Position -> Rotation -> State -> (List(Form), CanvasArea)
+
+display : Draw -> (Int, Int) -> State -> Element
+display draw (w,h) state =
+  let startPos = (0, 0)
+      startRot = 0
+      (segments, canvasArea) = draw startPos startRot state
+      _ = canvasArea |> Debug.watch "canvas_area"
+      (canvasW, canvasH) = canvasDimension canvasArea 
+                           |> Debug.watch "canvas_dimension"
+      _ = (w, h) |> Debug.watch "window_dimension"
+      scaleFactor = 
+        if canvasW > (toFloat w) || canvasH > (toFloat h)
+        then min (toFloat w / canvasW) (toFloat h / canvasH)
+        else 1.0
+      _ = scaleFactor |> Debug.watch "scale_factor"
+      content = 
+        group segments
+        |> scale scaleFactor
+        |> move (-canvasW*scaleFactor/2, -canvasH*scaleFactor/2)
+  in (collage w h [content])
