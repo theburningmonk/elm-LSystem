@@ -74,8 +74,9 @@ display draw (w,h) state =
         then min (toFloat w / canvasW) (toFloat h / canvasH)
         else 1.0
       _ = scaleFactor |> Debug.watch "scale_factor"
+      (centreX, centreY) = canvasCentre canvasArea
       content = 
         group segments
         |> scale scaleFactor
-        |> move (-canvasW*scaleFactor/2, -canvasH*scaleFactor/2)
+        |> move (-centreX*scaleFactor, -centreY*scaleFactor)
   in (collage w h [content])

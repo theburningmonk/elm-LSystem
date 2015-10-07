@@ -8364,16 +8364,19 @@ Elm.Path.make = function (_elm) {
                  $Basics.toFloat(_v10._0) / canvasW,
                  $Basics.toFloat(_v10._1) / canvasH) : 1.0;
                  var _ = $Debug.watch("scale_factor")(scaleFactor);
+                 var $ = canvasCentre(canvasArea),
+                 centreX = $._0,
+                 centreY = $._1;
                  var content = $Graphics$Collage.move({ctor: "_Tuple2"
-                                                      ,_0: (0 - canvasW) * scaleFactor / 2
-                                                      ,_1: (0 - canvasH) * scaleFactor / 2})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segments)));
+                                                      ,_0: (0 - centreX) * scaleFactor
+                                                      ,_1: (0 - centreY) * scaleFactor})($Graphics$Collage.scale(scaleFactor)($Graphics$Collage.group(segments)));
                  return A3($Graphics$Collage.collage,
                  _v10._0,
                  _v10._1,
                  _L.fromArray([content]));
               }();}
          _U.badCase($moduleName,
-         "between lines 65 and 81");
+         "between lines 65 and 82");
       }();
    });
    var defaultCanvasArea = {_: {}
