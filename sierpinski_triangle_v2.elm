@@ -21,7 +21,7 @@ sierpinskiTri =
               ('G', String.toList "GG")
             ] }
 
-draw startPos startRot state =
+draw startPos state =
   let angle = degrees -120
       (_, _, segs, canvasArea) =
         state |> List.foldl (\sym (pos, rotation, acc, canvasArea) ->
@@ -33,7 +33,7 @@ draw startPos startRot state =
                 in (endPos, rotation, newAcc, newCanvasArea)
                | sym == '+' -> (pos, rotation+angle, acc, canvasArea)
                | sym == '-' -> (pos, rotation-angle, acc, canvasArea)
-          ) (startPos, startRot, [], defaultCanvasArea)
+          ) (startPos, 0, [], defaultCanvasArea)
   in (segs, canvasArea)
 
 main = (display draw) <~ Window.dimensions ~ (states sierpinskiTri)

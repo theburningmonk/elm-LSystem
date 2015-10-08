@@ -3212,8 +3212,7 @@ Elm.Main.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var draw = F3(function (startPos,
-   startRot,
+   var draw = F2(function (startPos,
    state) {
       return function () {
          var startStack = _L.fromArray([]);
@@ -3324,7 +3323,7 @@ Elm.Main.make = function (_elm) {
          }),
          {ctor: "_Tuple5"
          ,_0: startPos
-         ,_1: startRot
+         ,_1: $Basics.degrees(45)
          ,_2: startStack
          ,_3: _L.fromArray([])
          ,_4: $Path.defaultCanvasArea})(state);
@@ -8404,14 +8403,10 @@ Elm.Path.make = function (_elm) {
                  var _ = $Debug.watch("window_dimension")({ctor: "_Tuple2"
                                                           ,_0: _v10._0
                                                           ,_1: _v10._1});
-                 var startRot = 0;
                  var startPos = {ctor: "_Tuple2"
                                 ,_0: 0
                                 ,_1: 0};
-                 var $ = A3(draw,
-                 startPos,
-                 startRot,
-                 state),
+                 var $ = A2(draw,startPos,state),
                  segments = $._0,
                  canvasArea = $._1;
                  var _ = $Debug.watch("canvas_area")(canvasArea);
@@ -8436,7 +8431,7 @@ Elm.Path.make = function (_elm) {
                  _L.fromArray([content]));
               }();}
          _U.badCase($moduleName,
-         "between lines 65 and 82");
+         "between lines 65 and 81");
       }();
    });
    var defaultCanvasArea = {_: {}

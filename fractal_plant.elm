@@ -21,7 +21,7 @@ fractalPlant =
               ('F', String.toList "FF")
             ] }
 
-draw startPos startRot state =
+draw startPos state =
   let angle = degrees 25
       startStack = []
       (_, _, _, segs, canvasArea) =
@@ -42,7 +42,7 @@ draw startPos startRot state =
                 let ((newPos, newRot), newStack) = pop stack
                 in (newPos, newRot, newStack, acc, canvasArea)
               _ -> (pos, rot, stack, acc, canvasArea)
-          ) (startPos, startRot, startStack, [], defaultCanvasArea)
+          ) (startPos, degrees 45, startStack, [], defaultCanvasArea)
   in (segs, canvasArea)
 
 main = (display draw) <~ Window.dimensions ~ (states fractalPlant)

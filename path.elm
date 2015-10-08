@@ -58,13 +58,12 @@ updateCanvasArea area pos =
      }
 
 type alias Draw =
-  Position -> Rotation -> State -> (List(Form), CanvasArea)
+  Position -> State -> (List(Form), CanvasArea)
 
 display : Draw -> (Int, Int) -> State -> Element
 display draw (w,h) state =
   let startPos = (0, 0)
-      startRot = 0
-      (segments, canvasArea) = draw startPos startRot state
+      (segments, canvasArea) = draw startPos state
       _ = canvasArea |> Debug.watch "canvas_area"
       (canvasW, canvasH) = canvasDimension canvasArea 
                            |> Debug.watch "canvas_dimension"
