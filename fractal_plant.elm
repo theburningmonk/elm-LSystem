@@ -13,8 +13,6 @@ import Debug
 
 type alias Position = Path.Position
 
-angle = degrees 25
-
 fractalPlant : LSystem
 fractalPlant =
   { axiom = [ 'X' ],
@@ -23,19 +21,14 @@ fractalPlant =
               ('F', String.toList "FF")
             ] }
 
-draw : Position -> Position -> Form
-draw pos endPos = segment pos endPos |> traced (solid black)
-
-display : (Int,Int) -> State -> Element
-display (w,h) state = 
-  let startPos = (0, 0)
-      startRot = 0
-      stackStack = []
+draw startPos startRot state =
+  let angle = degrees 25
+      startStack = []
       (_, _, _, segs, canvasArea) =
         state |> List.foldl (\sym (pos, rotation, stack, acc, canvasArea) ->
             if | sym == 'F' ->
                 let endPos = calcEndPos pos rotation 10
-                    newSeg = draw pos endPos
+                    newSeg = segment pos endPos |> traced (solid black)
                     newAcc = newSeg::acc
                     newCanvasArea = updateCanvasArea canvasArea endPos
                 in (endPos, rotation, stack, newAcc, newCanvasArea)
@@ -48,21 +41,7 @@ display (w,h) state =
                 let ((newPos, newRotation), newStack) = pop stack
                 in (newPos, newRotation, newStack, acc, canvasArea)
                | otherwise  -> (pos, rotation, stack, acc, canvasArea)
-          ) (startPos, startRot, stackStack, [], defaultCanvasArea)
-      (canvasWidth, canvasHeight) = canvasDimension canvasArea
-      _ = (canvasWidth, canvasHeight) |> Debug.watch "canvasDimension"
-      _ = (w, h) |> Debug.watch "windowDimension"
-      _ = canvasArea |> Debug.watch "canvas_area"
-      scaleFactor = 
-        if canvasWidth > (toFloat w) || canvasHeight > (toFloat h)
-        then min (toFloat w / canvasWidth) (toFloat h / canvasHeight)
-        else 1.0
-      _ = scaleFactor |> Debug.watch "scaleFactor"
-      (centreX, centreY) = canvasCentre canvasArea |> Debug.watch "canvas_area_centre"
-      content = 
-        group segs
-        |> scale scaleFactor
-        |> move (-centreX*scaleFactor, -centreY*scaleFactor)
-  in (collage w h [content])
+          ) (startPos, startRot, startStack, [], defaultCanvasArea)      
+  in (segs, canvasArea)
 
-main = display <~ Window.dimensions ~ (states fractalPlant)
+main = (display draw) <~ Window.dimensions ~ (states fractalPlant)
