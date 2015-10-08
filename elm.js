@@ -3216,15 +3216,14 @@ Elm.Main.make = function (_elm) {
    startRot,
    state) {
       return function () {
-         var angle = $Basics.degrees(-120);
+         var angle = $Basics.degrees(90);
          var _ = A2($List.foldl,
          F2(function (sym,_v0) {
             return function () {
                switch (_v0.ctor)
                {case "_Tuple4":
                   return _U.eq(sym,
-                    _U.chr("F")) || _U.eq(sym,
-                    _U.chr("G")) ? function () {
+                    _U.chr("F")) ? function () {
                        var endPos = A3($Path.calcEndPos,
                        _v0._0,
                        _v0._1,
@@ -3253,10 +3252,13 @@ Elm.Main.make = function (_elm) {
                                    ,_0: _v0._0
                                    ,_1: _v0._1 - angle
                                    ,_2: _v0._2
-                                   ,_3: _v0._3} : _U.badIf($moduleName,
-                    "between lines 28 and 35");}
+                                   ,_3: _v0._3} : {ctor: "_Tuple4"
+                                                  ,_0: _v0._0
+                                                  ,_1: _v0._1
+                                                  ,_2: _v0._2
+                                                  ,_3: _v0._3};}
                _U.badCase($moduleName,
-               "between lines 28 and 35");
+               "between lines 28 and 36");
             }();
          }),
          {ctor: "_Tuple4"
@@ -3268,38 +3270,35 @@ Elm.Main.make = function (_elm) {
             switch (_.ctor)
             {case "_Tuple4": return _._3;}
             _U.badCase($moduleName,
-            "between lines 27 and 36");
+            "between lines 27 and 37");
          }();
          var segs = function () {
             switch (_.ctor)
             {case "_Tuple4": return _._2;}
             _U.badCase($moduleName,
-            "between lines 27 and 36");
+            "between lines 27 and 37");
          }();
          return {ctor: "_Tuple2"
                 ,_0: segs
                 ,_1: canvasArea};
       }();
    });
-   var sierpinskiTri = {_: {}
-                       ,axiom: _L.fromArray([_U.chr("F")
-                                            ,_U.chr("-")
-                                            ,_U.chr("G")
-                                            ,_U.chr("-")
-                                            ,_U.chr("G")])
-                       ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                            ,_0: _U.chr("F")
-                                                            ,_1: $String.toList("F-G+F+G-F")}
-                                                           ,{ctor: "_Tuple2"
-                                                            ,_0: _U.chr("G")
-                                                            ,_1: $String.toList("GG")}]))};
+   var dragonCurve = {_: {}
+                     ,axiom: _L.fromArray([_U.chr("F")
+                                          ,_U.chr("X")])
+                     ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
+                                                          ,_0: _U.chr("X")
+                                                          ,_1: $String.toList("X+YF+")}
+                                                         ,{ctor: "_Tuple2"
+                                                          ,_0: _U.chr("Y")
+                                                          ,_1: $String.toList("-FX-Y")}]))};
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    $Path.display(draw),
    $Window.dimensions),
-   $Core.states(sierpinskiTri));
+   $Core.states(dragonCurve));
    _elm.Main.values = {_op: _op
-                      ,sierpinskiTri: sierpinskiTri
+                      ,dragonCurve: dragonCurve
                       ,draw: draw
                       ,main: main};
    return _elm.Main.values;

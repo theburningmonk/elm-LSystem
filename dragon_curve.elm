@@ -31,8 +31,8 @@ draw startPos startRot state =
                     newAcc = newSeg::acc
                     newCanvasArea = updateCanvasArea canvasArea endPos
                 in (endPos, rotation, newAcc, newCanvasArea)
-               | sym == '+' -> (pos, rotation-angle, acc, canvasArea)
-               | sym == '-' -> (pos, rotation+angle, acc, canvasArea)
+               | sym == '+' -> (pos, rotation+angle, acc, canvasArea)
+               | sym == '-' -> (pos, rotation-angle, acc, canvasArea)
                | otherwise  -> (pos, rotation, acc, canvasArea)
           ) (startPos, startRot, [], defaultCanvasArea)
   in (segs, canvasArea)
