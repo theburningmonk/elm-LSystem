@@ -16,8 +16,8 @@ type alias Position = Path.Position
 fractalPlant : LSystem
 fractalPlant =
   { axiom = [ 'X' ],
-    rules = Dict.fromList [ 
-              ('X', String.toList "F−[[X]+X]+F[+FX]−X"),
+    rules = Dict.fromList [
+              ('X', String.toList "F-[[X]+X]+F[+FX]-X"),
               ('F', String.toList "FF")
             ] }
 
@@ -25,23 +25,24 @@ draw startPos startRot state =
   let angle = degrees 25
       startStack = []
       (_, _, _, segs, canvasArea) =
-        state |> List.foldl (\sym (pos, rotation, stack, acc, canvasArea) ->
-            if | sym == 'F' ->
-                let endPos = calcEndPos pos rotation 10
+        state |> List.foldl (\sym (pos, rot, stack, acc, canvasArea) ->
+            case sym of
+              'F' ->
+                let endPos = calcEndPos pos rot 10
                     newSeg = segment pos endPos |> traced (solid black)
                     newAcc = newSeg::acc
                     newCanvasArea = updateCanvasArea canvasArea endPos
-                in (endPos, rotation, stack, newAcc, newCanvasArea)
-               | sym == '+' -> (pos, rotation+angle, stack, acc, canvasArea)
-               | sym == '-' -> (pos, rotation-angle, stack, acc, canvasArea)
-               | sym == '[' -> 
-                let newStack = push (pos, rotation) stack
-                in (pos, rotation, newStack, acc, canvasArea)
-               | sym == ']' ->
-                let ((newPos, newRotation), newStack) = pop stack
-                in (newPos, newRotation, newStack, acc, canvasArea)
-               | otherwise  -> (pos, rotation, stack, acc, canvasArea)
-          ) (startPos, startRot, startStack, [], defaultCanvasArea)      
+                in (endPos, rot, stack, newAcc, newCanvasArea)
+              '+' -> (pos, rot+angle, stack, acc, canvasArea)
+              '-' -> (pos, rot-angle, stack, acc, canvasArea)
+              '[' ->
+                let newStack = push (pos, rot) stack
+                in (pos, rot, newStack, acc, canvasArea)
+              ']' ->
+                let ((newPos, newRot), newStack) = pop stack
+                in (newPos, newRot, newStack, acc, canvasArea)
+              _ -> (pos, rot, stack, acc, canvasArea)
+          ) (startPos, startRot, startStack, [], defaultCanvasArea)
   in (segs, canvasArea)
 
 main = (display draw) <~ Window.dimensions ~ (states fractalPlant)
