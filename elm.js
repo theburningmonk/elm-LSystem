@@ -3216,7 +3216,7 @@ Elm.Main.make = function (_elm) {
    state) {
       return function () {
          var startStack = _L.fromArray([]);
-         var angle = $Basics.degrees(25);
+         var angle = $Basics.degrees(60);
          var _ = A2($List.foldl,
          F2(function (sym,_v0) {
             return function () {
@@ -3323,7 +3323,7 @@ Elm.Main.make = function (_elm) {
          }),
          {ctor: "_Tuple5"
          ,_0: startPos
-         ,_1: $Basics.degrees(45)
+         ,_1: $Basics.degrees(90)
          ,_2: startStack
          ,_3: _L.fromArray([])
          ,_4: $Path.defaultCanvasArea})(state);
@@ -3345,13 +3345,16 @@ Elm.Main.make = function (_elm) {
       }();
    });
    var fractalPlant = {_: {}
-                      ,axiom: _L.fromArray([_U.chr("X")])
+                      ,axiom: _L.fromArray([_U.chr("F")
+                                           ,_U.chr("F")
+                                           ,_U.chr("P")
+                                           ,_U.chr("F")])
                       ,rules: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
-                                                           ,_0: _U.chr("X")
-                                                           ,_1: $String.toList("F-[[X]+X]+F[+FX]-X")}
-                                                          ,{ctor: "_Tuple2"
                                                            ,_0: _U.chr("F")
-                                                           ,_1: $String.toList("FF")}]))};
+                                                           ,_1: $String.toList("PF++F[FF-F+PF+FPP][F]FFPF")}
+                                                          ,{ctor: "_Tuple2"
+                                                           ,_0: _U.chr("P")
+                                                           ,_1: $String.toList("")}]))};
    var main = A2($Signal._op["~"],
    A2($Signal._op["<~"],
    $Path.display(draw),
